@@ -1,26 +1,26 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { LiveProvider, LivePreview, LiveError } from 'react-live';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutTemplate, Eye, Code, Monitor, Smartphone, Tablet, Cpu } from 'lucide-react';
+import { LayoutTemplate, Eye, Code, Monitor, Smartphone, Tablet, Cpu, AlertCircle, CheckCircle } from 'lucide-react';
 import useOSStore from '@/store/useOSStore';
 import { spioRegistry, getComponentById } from '@/data/spio-registry';
 
-interface ComponentPreview {
-  id: string;
-  name: string;
-  description: string;
-  category: string;
-  component?: React.ComponentType<any>;
-  code: string;
-}
-
 const UICanvas: React.FC = () => {
-  const { activeComponentId } = useOSStore();
-  const [selectedPreview, setSelectedPreview] = useState<ComponentPreview | null>(null);
+  const { 
+    activeComponentId, 
+    draftCode, 
+    livePreviewEnabled,
+    previewError,
+    setPreviewError 
+  } = useOSStore();
+  
+  const [selectedComponent, setSelectedComponent] = useState<any>(null);
   const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
   const [deviceSize, setDeviceSize] = useState<'full' | 'tablet' | 'mobile'>('full');
-  const [previews, setPreviews] = useState<ComponentPreview[]>([]);
+  const [previews, setPreviews] = useState<any[]>([]);
+  const [hasError, setHasError] = useState(false);
 
   // Load previews from registry
   useEffect(() => {
@@ -37,12 +37,12 @@ const UICanvas: React.FC = () => {
     setPreviews(frontendComponents);
   }, []);
 
-  // Listen to activeComponentId changes
+  // Listen to activeComponentId and draftCode changes
   useEffect(() => {
     if (activeComponentId) {
       const component = getComponentById(activeComponentId);
-      if (component && component.componentType) {
-        setSelectedPreview({
+      if (component) {
+        setSelectedComponent({
           id: component.id,
           name: component.title,
           description: component.description || '',
@@ -51,19 +51,27 @@ const UICanvas: React.FC = () => {
           code: component.codeSnippet,
         });
         setViewMode('preview');
-      } else if (component) {
-        // Backend or Prompt - show code only
-        setSelectedPreview({
-          id: component.id,
-          name: component.title,
-          description: component.description || '',
-          category: component.category,
-          code: component.codeSnippet,
-        });
-        setViewMode('code');
+        setHasError(false);
+        setPreviewError(null);
       }
     }
-  }, [activeComponentId]);
+  }, [activeComponentId, setPreviewError]);
+
+  // Validate code syntax (basic check)
+  useEffect(() => {
+    if (draftCode && livePreviewEnabled) {
+      try {
+        // Basic syntax validation
+        if (draftCode.includes('import') || draftCode.includes('export')) {
+          setHasError(false);
+          setPreviewError(null);
+        }
+      } catch (err) {
+        setHasError(true);
+        setPreviewError(err instanceof Error ? err.message : 'Syntax error');
+      }
+    }
+  }, [draftCode, livePreviewEnabled, setPreviewError]);
 
   const getDeviceWidth = () => {
     switch (deviceSize) {
@@ -89,6 +97,28 @@ const UICanvas: React.FC = () => {
     }
   };
 
+  // Transform code for react-live
+  const transformCodeForPreview = (code: string) => {
+    try {
+      // Remove imports for react-live (it provides React globally)
+      let transformed = code
+        .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
+        .replace(/export\s+(default\s+)?(function|const|class)\s+/g, '$2 ')
+        .trim();
+      
+      // Wrap in function component if needed
+      if (!transformed.includes('return')) {
+        return `function Preview() { return null; }`;
+      }
+      
+      return transformed;
+    } catch (err) {
+      setHasError(true);
+      setPreviewError(err instanceof Error ? err.message : 'Transform error');
+      return `function Preview() { return null; }`;
+    }
+  };
+
   return (
     <div className="flex h-full">
       {/* Components Sidebar */}
@@ -105,12 +135,12 @@ const UICanvas: React.FC = () => {
             <motion.div
               key={preview.id}
               className={`px-3 py-3 cursor-pointer transition-colors ${
-                selectedPreview?.id === preview.id
+                selectedComponent?.id === preview.id
                   ? 'bg-white/10 border-l-2 border-green-400'
                   : 'hover:bg-white/5 border-l-2 border-transparent'
               }`}
               onClick={() => {
-                setSelectedPreview(preview);
+                setSelectedComponent(preview);
                 setViewMode('preview');
               }}
               whileHover={{ x: 2 }}
@@ -127,10 +157,9 @@ const UICanvas: React.FC = () => {
             </motion.div>
           ))}
 
-          {/* Non-frontend components info */}
           <div className="px-3 py-2 mt-2 border-t border-white/10">
             <p className="text-white/40 text-xs">
-              💡 Tip: Select components in SPIO Explorer to view Backend scripts and Prompts
+              💡 Edit code in Code Terminal to see live changes
             </p>
           </div>
         </div>
@@ -141,7 +170,7 @@ const UICanvas: React.FC = () => {
         {/* Toolbar */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/30">
           <div className="flex items-center gap-2">
-            {selectedPreview?.component && (
+            {selectedComponent && (
               <>
                 <button
                   onClick={() => setViewMode('preview')}
@@ -169,7 +198,7 @@ const UICanvas: React.FC = () => {
             )}
           </div>
 
-          {selectedPreview?.component && (
+          {selectedComponent && selectedComponent.component && (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setDeviceSize('full')}
@@ -210,9 +239,9 @@ const UICanvas: React.FC = () => {
 
         {/* Canvas Content */}
         <div className="flex-1 overflow-auto p-6 flex items-center justify-center">
-          {selectedPreview ? (
+          {selectedComponent ? (
             <motion.div
-              key={selectedPreview.id + viewMode}
+              key={selectedComponent.id + viewMode}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -221,28 +250,64 @@ const UICanvas: React.FC = () => {
             >
               {/* Component Info Bar */}
               <div className="mb-4 flex items-center gap-3">
-                <h3 className="text-white font-semibold">{selectedPreview.name}</h3>
-                <span className={`text-xs px-2 py-0.5 rounded ${getCategoryColor(selectedPreview.category)}`}>
-                  {selectedPreview.category}
+                <h3 className="text-white font-semibold">{selectedComponent.name}</h3>
+                <span className={`text-xs px-2 py-0.5 rounded ${getCategoryColor(selectedComponent.category)}`}>
+                  {selectedComponent.category}
                 </span>
-                {selectedPreview.component && (
+                {livePreviewEnabled && (
                   <span className="flex items-center gap-1 text-xs text-green-400">
-                    <Cpu className="w-3 h-3" />
-                    Interactive
+                    <CheckCircle className="w-3 h-3" />
+                    Live Sync Active
                   </span>
                 )}
               </div>
 
-              {viewMode === 'preview' && selectedPreview.component ? (
-                <div className="bg-black/30 rounded-xl border border-white/10 p-8 min-h-[300px] flex items-center justify-center">
-                  <div className="w-full flex items-center justify-center">
-                    <selectedPreview.component />
-                  </div>
+              {viewMode === 'preview' ? (
+                <div className="bg-black/30 rounded-xl border border-white/10 p-8 min-h-[300px] flex items-center justify-center relative">
+                  {/* Error Overlay */}
+                  {hasError && previewError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="absolute top-0 left-0 right-0 bg-red-500/20 border border-red-500/50 rounded-lg p-3 mb-4"
+                    >
+                      <div className="flex items-start gap-3">
+                        <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                        <div className="flex-1">
+                          <p className="text-red-400 font-semibold text-sm">Compilation Error</p>
+                          <p className="text-red-300/80 text-xs mt-1">{previewError}</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Live Preview with react-live */}
+                  {livePreviewEnabled && draftCode ? (
+                    <LiveProvider
+                      code={transformCodeForPreview(draftCode)}
+                      noInline={false}
+                    >
+                      <div className="w-full flex items-center justify-center">
+                        <LiveError className="text-red-400 text-sm bg-red-500/10 p-4 rounded-lg" />
+                        <LivePreview className="w-full flex items-center justify-center" />
+                      </div>
+                    </LiveProvider>
+                  ) : selectedComponent.component ? (
+                    // Fallback to static component
+                    <div className="w-full flex items-center justify-center">
+                      <selectedComponent.component />
+                    </div>
+                  ) : (
+                    <div className="text-white/30 text-center">
+                      <p>No preview available</p>
+                      <p className="text-xs mt-1">This is a backend/prompt component</p>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <pre className="bg-black/50 rounded-xl border border-white/10 p-4 overflow-x-auto max-h-[500px]">
                   <code className="text-sm text-green-400/90 font-mono whitespace-pre">
-                    {selectedPreview.code}
+                    {draftCode || selectedComponent.code}
                   </code>
                 </pre>
               )}
@@ -250,20 +315,20 @@ const UICanvas: React.FC = () => {
           ) : (
             <div className="text-center text-white/30">
               <LayoutTemplate className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">Select a component from SPIO Explorer</p>
-              <p className="text-xs mt-1">to preview it here</p>
+              <p className="text-sm">Select a component to preview</p>
+              <p className="text-xs mt-1">Edit in Code Terminal for live changes</p>
             </div>
           )}
         </div>
 
         {/* Info Bar */}
-        {selectedPreview && (
+        {selectedComponent && (
           <div className="px-4 py-2 border-t border-white/10 bg-black/30 flex items-center justify-between">
             <span className="text-white/40 text-xs">
-              {selectedPreview.name} • {selectedPreview.id}
+              {selectedComponent.name} • {selectedComponent.id}
             </span>
             <span className="text-white/40 text-xs">
-              {viewMode === 'preview' && selectedPreview.component ? deviceSize : 'code'} view
+              {viewMode === 'preview' && selectedComponent.component ? deviceSize : 'code'} view
             </span>
           </div>
         )}

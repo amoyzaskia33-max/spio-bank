@@ -30,6 +30,11 @@ interface OSState {
   
   // Phase 2: Active Component State
   activeComponentId: string | null;
+  
+  // Phase 5: Live Preview Engine
+  draftCode: string | null;
+  livePreviewEnabled: boolean;
+  previewError: string | null;
 
   // Actions
   openWindow: (appId: string, appDef: AppDefinition, content?: React.ReactNode) => void;
@@ -45,6 +50,11 @@ interface OSState {
   // Phase 2: Component Actions
   setActiveComponent: (id: string | null) => void;
   clearActiveComponent: () => void;
+  
+  // Phase 5: Live Preview Actions
+  setDraftCode: (code: string | null) => void;
+  setLivePreviewEnabled: (enabled: boolean) => void;
+  setPreviewError: (error: string | null) => void;
 }
 
 const APP_REGISTRY: Record<string, AppDefinition> = {
@@ -78,6 +88,9 @@ export const useOSStore = create<OSState>((set, get) => ({
   isBooted: false,
   bootLogs: [],
   activeComponentId: null,
+  draftCode: null,
+  livePreviewEnabled: true,
+  previewError: null,
 
   openWindow: (appId: string, appDef: AppDefinition, content?: React.ReactNode) => {
     const { windows, topZIndex } = get();
@@ -204,6 +217,19 @@ export const useOSStore = create<OSState>((set, get) => ({
 
   clearActiveComponent: () => {
     set({ activeComponentId: null });
+  },
+  
+  // Phase 5: Live Preview Actions
+  setDraftCode: (code: string | null) => {
+    set({ draftCode: code });
+  },
+  
+  setLivePreviewEnabled: (enabled: boolean) => {
+    set({ livePreviewEnabled: enabled });
+  },
+  
+  setPreviewError: (error: string | null) => {
+    set({ previewError: error });
   },
 }));
 
