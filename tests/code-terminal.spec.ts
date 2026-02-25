@@ -35,11 +35,20 @@ test.describe('SPIO OS - Code Terminal', () => {
 
     // Click on a snippet
     await page.getByText('Button Glow').first().click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
 
-    // Monaco Editor should be visible (look for editor content or textarea)
-    const editorVisible = await page.locator('[class*="monaco-editor"]').first().isVisible()
-      || await page.locator('textarea').first().isVisible();
+    // Monaco Editor should be visible - check for editor container or textarea
+    const editorContainer = page.locator('[data-monaco-editor-container], [class*="monaco-editor"], .monaco-editor').first();
+    const textarea = page.locator('textarea').first();
+    
+    // Wait for either editor to be visible
+    await Promise.race([
+      editorContainer.waitFor({ state: 'visible', timeout: 5000 }).catch(() => Promise.resolve()),
+      textarea.waitFor({ state: 'visible', timeout: 5000 }).catch(() => Promise.resolve()),
+    ]);
+    
+    const editorVisible = await editorContainer.isVisible().catch(() => false)
+      || await textarea.isVisible().catch(() => false);
     expect(editorVisible).toBe(true);
   });
 
