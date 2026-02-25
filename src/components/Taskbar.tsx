@@ -44,10 +44,10 @@ const Taskbar: React.FC = () => {
       className="absolute bottom-4 left-0 right-0 flex items-center justify-center px-4"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
       {/* macOS-style Floating Dock */}
-      <div className="glass-heavy rounded-dock px-3 py-2 shadow-dock">
+      <div className="glass-premium rounded-dock px-3 py-2 shadow-dock border border-white/15">
         <div className="flex items-center gap-2">
           {apps.map((app) => {
             const isOpen = windows[app.id]?.isOpen;
@@ -59,8 +59,8 @@ const Taskbar: React.FC = () => {
                 onClick={() => handleAppClick(app.id, app.component)}
                 className={`relative flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-white/10 shadow-lg'
-                    : 'hover:bg-white/5'
+                    ? 'bg-white/15 shadow-lg border border-white/10'
+                    : 'hover:bg-white/5 border border-transparent'
                 }`}
                 whileHover={{ scale: 1.1, y: -4 }}
                 whileTap={{ scale: 0.95 }}
@@ -76,7 +76,7 @@ const Taskbar: React.FC = () => {
                 {/* Active indicator dot */}
                 {isOpen && (
                   <motion.div
-                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-spio-accent"
+                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-spio-accent shadow-lg shadow-spio-accent/50"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                   />

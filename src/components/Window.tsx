@@ -86,7 +86,7 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
 
   return (
     <motion.div
-      className="fixed rounded-3xl overflow-hidden shadow-window border border-white/10 bg-spio-surface/95 backdrop-blur-glass-heavy"
+      className="fixed rounded-3xl overflow-hidden shadow-window-lg border border-white/10 bg-spio-surface/95 backdrop-blur-glass-heavy"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
@@ -94,10 +94,10 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
         top: isMaximized ? 0 : position.y,
         zIndex,
       }}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: 20 }}
+      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
       drag={!isMaximized}
       dragMomentum={false}
       dragElastic={0}
@@ -114,7 +114,7 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={handleClose}
-            className="group w-3 h-3 rounded-full bg-spio-red flex items-center justify-center transition-all hover:bg-spio-red/80"
+            className="group w-3 h-3 rounded-full bg-spio-red flex items-center justify-center transition-all hover:bg-spio-red/80 shadow-md"
             title="Close"
           >
             <X className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
@@ -122,7 +122,7 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
           
           <button
             onClick={handleMinimize}
-            className="group w-3 h-3 rounded-full bg-spio-yellow flex items-center justify-center transition-all hover:bg-spio-yellow/80"
+            className="group w-3 h-3 rounded-full bg-spio-yellow flex items-center justify-center transition-all hover:bg-spio-yellow/80 shadow-md"
             title="Minimize"
           >
             <Minus className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
@@ -130,7 +130,7 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
           
           <button
             onClick={handleMaximizeToggle}
-            className="group w-3 h-3 rounded-full bg-spio-green flex items-center justify-center transition-all hover:bg-spio-green/80"
+            className="group w-3 h-3 rounded-full bg-spio-green flex items-center justify-center transition-all hover:bg-spio-green/80 shadow-md"
             title={isMaximized ? 'Restore' : 'Maximize'}
           >
             <Square className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />

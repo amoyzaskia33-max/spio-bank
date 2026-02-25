@@ -40,7 +40,9 @@ module.exports = {
       boxShadow: {
         'glass': '0 8px 32px rgba(0, 0, 0, 0.3)',
         'dock': '0 12px 48px rgba(0, 0, 0, 0.4)',
-        'window': '0 16px 64px rgba(0, 0, 0, 0.5)',
+        'window': '0 24px 80px rgba(0, 0, 0, 0.6)',
+        'window-lg': '0 32px 100px rgba(0, 0, 0, 0.7)',
+        'soft-diffused': '0 40px 120px rgba(0, 0, 0, 0.5)',
       },
     },
   },

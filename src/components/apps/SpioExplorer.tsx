@@ -67,8 +67,8 @@ const SpioExplorer: React.FC = () => {
   return (
     <div className="flex h-full">
       {/* Sidebar */}
-      <div className="w-64 border-r border-white/5 bg-spio-base/50 backdrop-blur-glass overflow-y-auto">
-        <div className="p-4 border-b border-white/5">
+      <div className="w-64 border-r border-white/10 bg-spio-base/50 backdrop-blur-glass-premium overflow-y-auto">
+        <div className="p-4 border-b border-white/10">
           <h2 className="text-spio-text font-semibold text-sm flex items-center gap-2">
             <Folder className="w-4 h-4 text-spio-accent" strokeWidth={1.5} />
             SPIO Explorer
@@ -133,7 +133,7 @@ const SpioExplorer: React.FC = () => {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="glass rounded-2xl p-5 border border-white/5"
+                className="glass-premium rounded-2xl p-5 border border-white/15"
               >
                 <div className="flex items-center gap-2 mb-2">
                   {getFileIcon(category.name)}
@@ -157,7 +157,7 @@ const SpioExplorer: React.FC = () => {
                   {category.components.map((component) => (
                     <motion.div
                       key={component.id}
-                      className="glass rounded-2xl p-5 cursor-pointer hover:border-spio-accent/50 transition-colors border border-white/5"
+                      className="glass-premium rounded-2xl p-5 cursor-pointer hover:border-spio-accent/50 transition-colors border border-white/15"
                       onClick={() => handleComponentSelect(component)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}

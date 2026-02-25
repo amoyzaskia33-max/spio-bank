@@ -71,8 +71,8 @@ body {
 /* Glass Effect Utility */
 .glass {
   background: rgba(48, 48, 68, 0.6);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -81,4 +81,12 @@ body {
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Premium Glass - Extra thick blur for sidebars */
+.glass-premium {
+  background: rgba(48, 48, 68, 0.7);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
