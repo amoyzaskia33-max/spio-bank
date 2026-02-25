@@ -3,38 +3,61 @@
 import React, { useState, useEffect } from 'react';
 import { LiveProvider, LivePreview, LiveError } from 'react-live';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LayoutTemplate, Eye, Code, Monitor, Smartphone, Tablet, Cpu, AlertCircle, CheckCircle } from 'lucide-react';
+import { LayoutTemplate, Eye, Code, Monitor, Smartphone, Tablet, Cpu, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 import useOSStore from '@/store/useOSStore';
-import { spioRegistry, getComponentById } from '@/data/spio-registry';
+import { getComponentById } from '@/data/spio-registry';
+
+interface VaultComponent {
+  id: string;
+  title: string;
+  category: 'Frontend' | 'Backend' | 'Prompt';
+  codeSnippet: string;
+  description?: string;
+}
 
 const UICanvas: React.FC = () => {
-  const { 
-    activeComponentId, 
-    draftCode, 
+  const {
+    activeComponentId,
+    draftCode,
     livePreviewEnabled,
     previewError,
-    setPreviewError 
+    setPreviewError
   } = useOSStore();
-  
+
   const [selectedComponent, setSelectedComponent] = useState<any>(null);
   const [viewMode, setViewMode] = useState<'preview' | 'code'>('preview');
   const [deviceSize, setDeviceSize] = useState<'full' | 'tablet' | 'mobile'>('full');
   const [previews, setPreviews] = useState<any[]>([]);
   const [hasError, setHasError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load previews from registry
+  // Load vault components from API
   useEffect(() => {
-    const frontendComponents = spioRegistry
-      .filter((comp) => comp.category === 'Frontend' && comp.componentType)
-      .map((comp) => ({
-        id: comp.id,
-        name: comp.title,
-        description: comp.description || '',
-        category: comp.category,
-        component: comp.componentType,
-        code: comp.codeSnippet,
-      }));
-    setPreviews(frontendComponents);
+    const loadPreviews = async () => {
+      try {
+        const response = await fetch('/api/vault');
+        const data = await response.json();
+        
+        if (data.success) {
+          const frontendComponents = data.data
+            .filter((comp: VaultComponent) => comp.category === 'Frontend')
+            .map((comp: VaultComponent) => ({
+              id: comp.id,
+              name: comp.title,
+              description: comp.description || '',
+              category: comp.category,
+              code: comp.codeSnippet,
+            }));
+          setPreviews(frontendComponents);
+        }
+      } catch (error) {
+        console.error('Failed to load vault components:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadPreviews();
   }, []);
 
   // Listen to activeComponentId and draftCode changes
@@ -131,31 +154,38 @@ const UICanvas: React.FC = () => {
         </div>
 
         <div className="flex-1 overflow-y-auto py-2">
-          {previews.map((preview) => (
-            <motion.div
-              key={preview.id}
-              className={`px-3 py-3 cursor-pointer transition-colors ${
-                selectedComponent?.id === preview.id
-                  ? 'bg-white/10 border-l-2 border-green-400'
-                  : 'hover:bg-white/5 border-l-2 border-transparent'
-              }`}
-              onClick={() => {
-                setSelectedComponent(preview);
-                setViewMode('preview');
-              }}
-              whileHover={{ x: 2 }}
-            >
-              <div className="flex items-center justify-between mb-1">
-                <p className="text-white/80 font-medium text-sm">{preview.name}</p>
-                {preview.component && (
-                  <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">
-                    Live
-                  </span>
-                )}
-              </div>
-              <p className="text-white/40 text-xs line-clamp-2">{preview.description}</p>
-            </motion.div>
-          ))}
+          {isLoading ? (
+            <div className="flex items-center justify-center py-8 text-white/40 text-xs">
+              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              Loading...
+            </div>
+          ) : (
+            previews.map((preview) => (
+              <motion.div
+                key={preview.id}
+                className={`px-3 py-3 cursor-pointer transition-colors ${
+                  selectedComponent?.id === preview.id
+                    ? 'bg-white/10 border-l-2 border-green-400'
+                    : 'hover:bg-white/5 border-l-2 border-transparent'
+                }`}
+                onClick={() => {
+                  setSelectedComponent(preview);
+                  setViewMode('preview');
+                }}
+                whileHover={{ x: 2 }}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-white/80 font-medium text-sm">{preview.name}</p>
+                  {preview.component && (
+                    <span className="px-1.5 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">
+                      Live
+                    </span>
+                  )}
+                </div>
+                <p className="text-white/40 text-xs line-clamp-2">{preview.description}</p>
+              </motion.div>
+            ))
+          )}
 
           <div className="px-3 py-2 mt-2 border-t border-white/10">
             <p className="text-white/40 text-xs">

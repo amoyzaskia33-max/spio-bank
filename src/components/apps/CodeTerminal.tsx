@@ -6,7 +6,15 @@ import { LiveProvider, LivePreview, LiveError } from 'react-live';
 import { motion } from 'framer-motion';
 import { Terminal, Copy, Check, Code2, Send, Sparkles, Loader2, Play, Save, RotateCcw } from 'lucide-react';
 import useOSStore from '@/store/useOSStore';
-import { spioRegistry, getComponentById } from '@/data/spio-registry';
+import { getComponentById } from '@/data/spio-registry';
+
+interface VaultComponent {
+  id: string;
+  title: string;
+  category: 'Frontend' | 'Backend' | 'Prompt';
+  codeSnippet: string;
+  description?: string;
+}
 
 interface CodeSnippet {
   id: string;
@@ -34,7 +42,8 @@ const CodeTerminal: React.FC = () => {
   const [snippets, setSnippets] = useState<CodeSnippet[]>([]);
   const [selectedSnippet, setSelectedSnippet] = useState<CodeSnippet | null>(null);
   const [copied, setCopied] = useState(false);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   // Interactive Mode State
   const [isInteractiveMode, setIsInteractiveMode] = useState(false);
   const [inputMessage, setInputMessage] = useState('');
@@ -43,17 +52,33 @@ const CodeTerminal: React.FC = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Initialize snippets from registry
-  useEffect(() => {
-    const registrySnippets: CodeSnippet[] = spioRegistry.map((comp) => ({
-      id: comp.id,
-      name: comp.title,
-      language: comp.category === 'Frontend' ? 'tsx' : comp.category === 'Backend' ? 'ts' : 'md',
-      code: comp.codeSnippet,
-      category: comp.category,
-    }));
-    setSnippets(registrySnippets);
+  // Load vault components from API
+  const loadVaultComponents = useCallback(async () => {
+    try {
+      const response = await fetch('/api/vault');
+      const data = await response.json();
+      
+      if (data.success) {
+        const vaultSnippets: CodeSnippet[] = data.data.map((comp: VaultComponent) => ({
+          id: comp.id,
+          name: comp.title,
+          language: comp.category === 'Frontend' ? 'tsx' : comp.category === 'Backend' ? 'ts' : 'md',
+          code: comp.codeSnippet,
+          category: comp.category,
+        }));
+        setSnippets(vaultSnippets);
+      }
+    } catch (error) {
+      console.error('Failed to load vault components:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  // Initialize snippets from vault API
+  useEffect(() => {
+    loadVaultComponents();
+  }, [loadVaultComponents]);
 
   // Listen to activeComponentId changes and sync to draft code
   useEffect(() => {
@@ -166,14 +191,8 @@ const CodeTerminal: React.FC = () => {
           setMessages((prev) => [...prev, systemMessage]);
           
           setTimeout(() => {
-            const registrySnippets: CodeSnippet[] = spioRegistry.map((comp) => ({
-              id: comp.id,
-              name: comp.title,
-              language: comp.category === 'Frontend' ? 'tsx' : comp.category === 'Backend' ? 'ts' : 'md',
-              code: comp.codeSnippet,
-              category: comp.category,
-            }));
-            setSnippets(registrySnippets);
+            // Refresh snippets from vault API
+            loadVaultComponents();
           }, 2000);
         }
       } else {
@@ -254,38 +273,45 @@ const CodeTerminal: React.FC = () => {
 
         {!isInteractiveMode && (
           <div className="flex-1 overflow-y-auto py-2">
-            {['Frontend', 'Backend', 'Prompt'].map((category) => {
-              const categorySnippets = snippets.filter((s) => s.category === category);
-              if (categorySnippets.length === 0) return null;
+            {isLoading ? (
+              <div className="flex items-center justify-center py-8 text-white/40 text-xs">
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                Loading...
+              </div>
+            ) : (
+              ['Frontend', 'Backend', 'Prompt'].map((category) => {
+                const categorySnippets = snippets.filter((s) => s.category === category);
+                if (categorySnippets.length === 0) return null;
 
-              return (
-                <div key={category}>
-                  <div className="px-3 py-2 text-xs font-semibold text-white/40 uppercase tracking-wider">
-                    {category}
+                return (
+                  <div key={category}>
+                    <div className="px-3 py-2 text-xs font-semibold text-white/40 uppercase tracking-wider">
+                      {category}
+                    </div>
+                    {categorySnippets.map((snippet) => (
+                      <motion.div
+                        key={snippet.id}
+                        className={`group flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors ${
+                          selectedSnippet?.id === snippet.id
+                            ? 'bg-white/10 border-l-2 border-green-400'
+                            : 'hover:bg-white/5 border-l-2 border-transparent'
+                        }`}
+                        onClick={() => {
+                          setSelectedSnippet(snippet);
+                          setDraftCode(snippet.code);
+                        }}
+                        whileHover={{ x: 2 }}
+                      >
+                        <Code2 className="w-4 h-4 text-white/40" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-white/80 text-sm truncate">{snippet.name}</p>
+                        </div>
+                      </motion.div>
+                    ))}
                   </div>
-                  {categorySnippets.map((snippet) => (
-                    <motion.div
-                      key={snippet.id}
-                      className={`group flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors ${
-                        selectedSnippet?.id === snippet.id
-                          ? 'bg-white/10 border-l-2 border-green-400'
-                          : 'hover:bg-white/5 border-l-2 border-transparent'
-                      }`}
-                      onClick={() => {
-                        setSelectedSnippet(snippet);
-                        setDraftCode(snippet.code);
-                      }}
-                      whileHover={{ x: 2 }}
-                    >
-                      <Code2 className="w-4 h-4 text-white/40" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-white/80 text-sm truncate">{snippet.name}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         )}
 
