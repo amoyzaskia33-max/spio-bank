@@ -75,6 +75,10 @@ test.describe('SPIO OS - Code Terminal', () => {
   });
 
   test('should show language indicator', async ({ page }) => {
+    // Refresh page to reset state
+    await page.goto('/');
+    await page.waitForTimeout(2000);
+
     await page.getByRole('button', { name: 'Code Terminal' }).click();
     await page.waitForTimeout(500);
 

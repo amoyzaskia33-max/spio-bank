@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Terminal, Copy, Check, Code2, X, Send, Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import useOSStore from '@/store/useOSStore';
@@ -63,7 +63,7 @@ const CodeTerminal: React.FC = () => {
           name: component.title,
           language: component.category === 'Frontend' ? 'tsx' : component.category === 'Backend' ? 'ts' : 'md',
           code: component.codeSnippet,
-          category: comp.category,
+          category: component.category,
         };
         setSelectedSnippet(snippet);
       }
