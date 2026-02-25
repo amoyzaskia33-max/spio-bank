@@ -15,6 +15,22 @@
   --accent-danger: 239, 68, 68;       /* Red 500 */
 }
 
+/* Custom slow pulse animation for abstract blobs */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1) translate(-10px, 10px);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;

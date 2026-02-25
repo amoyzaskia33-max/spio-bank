@@ -65,22 +65,32 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className="relative h-screen w-screen bg-[#f3f4f6] overflow-hidden">
-      {/* Decorative Blur Shapes */}
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-purple-300/40 blur-[100px] mix-blend-multiply" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-300/40 blur-[120px] mix-blend-multiply" />
+    <div className="relative h-screen w-screen bg-[#F8FAFC] overflow-hidden selection:bg-purple-100 font-inter">
+      {/* Abstract Pastel Blobs - Generated via CSS */}
+      
+      {/* Blob 1: Soft Rose (Top Left) */}
+      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-rose-300/40 blur-[130px] mix-blend-multiply animate-pulse-slow" />
+      
+      {/* Blob 2: Soft Sky Blue (Bottom Right) */}
+      <div className="absolute bottom-[-20%] right-[-10%] w-[700px] h-[700px] rounded-full bg-sky-300/40 blur-[150px] mix-blend-multiply animate-pulse-slow" style={{ animationDelay: '1s' }} />
+      
+      {/* Blob 3: Soft Lavender (Center area) */}
+      <div className="absolute top-[30%] left-[40%] w-[500px] h-[500px] rounded-full bg-purple-300/30 blur-[120px] mix-blend-multiply" />
 
-      {/* Windows */}
-      <AnimatePresence>
-        {Object.values(windows).map((windowState) => (
-          <Window key={windowState.id} windowState={windowState}>
-            {windowState.content || renderAppContent(windowState.id)}
-          </Window>
-        ))}
-      </AnimatePresence>
+      {/* Main Content Container */}
+      <div className="relative z-10 h-full w-full">
+        {/* Windows */}
+        <AnimatePresence>
+          {Object.values(windows).map((windowState) => (
+            <Window key={windowState.id} windowState={windowState}>
+              {windowState.content || renderAppContent(windowState.id)}
+            </Window>
+          ))}
+        </AnimatePresence>
 
-      {/* Taskbar */}
-      <Taskbar />
+        {/* Taskbar */}
+        <Taskbar />
+      </div>
     </div>
   );
 };
