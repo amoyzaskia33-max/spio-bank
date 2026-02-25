@@ -94,17 +94,16 @@ const SpioExplorer: React.FC = memo(() => {
   const getFileIcon = React.useCallback((category: string) => {
     switch (category) {
       case 'Frontend':
-        return <FileCode className="w-4 h-4 text-indigo-400/80" />;
+        return <FileCode className="w-4 h-4 text-indigo-500" />;
       case 'Backend':
-        return <FileJson className="w-4 h-4 text-amber-400/80" />;
+        return <FileJson className="w-4 h-4 text-amber-500" />;
       case 'Prompt':
-        return <FileType className="w-4 h-4 text-purple-400/80" />;
+        return <FileType className="w-4 h-4 text-purple-500" />;
       default:
-        return <FileCode className="w-4 h-4 text-white/30" />;
+        return <FileCode className="w-4 h-4 text-slate-400" />;
     }
   }, []);
 
-  const totalComponents = components.length;
   const stats = {
     Frontend: components.filter(c => c.category === 'Frontend').length,
     Backend: components.filter(c => c.category === 'Backend').length,
@@ -113,34 +112,34 @@ const SpioExplorer: React.FC = memo(() => {
 
   return (
     <div className="flex h-full">
-      {/* Sidebar - Premium Styling */}
-      <div className="w-64 border-r border-white/5 bg-white/[0.015] backdrop-blur-2xl overflow-y-auto">
-        <div className="p-4 border-b border-white/5 flex items-center justify-between">
-          <h2 className="text-white/70 font-medium text-[13px] flex items-center gap-2">
-            <Folder className="w-4 h-4 text-white/50" strokeWidth={1.5} />
+      {/* Sidebar - Light Styling */}
+      <div className="w-64 border-r border-slate-200/60 bg-white/60 backdrop-blur-2xl overflow-y-auto">
+        <div className="p-4 border-b border-slate-200/60 flex items-center justify-between">
+          <h2 className="text-slate-700 font-medium text-[13px] flex items-center gap-2">
+            <Folder className="w-4 h-4 text-slate-400" strokeWidth={1.5} />
             SPIO Explorer
           </h2>
           <button
             onClick={loadVaultComponents}
             disabled={isLoading}
-            className="p-1.5 hover:bg-white/5 rounded-lg transition-colors disabled:opacity-50"
+            className="p-1.5 hover:bg-slate-100/60 rounded-lg transition-colors disabled:opacity-50"
             title="Refresh vault"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-white/40 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 text-slate-400 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
         </div>
 
         {isLoading && components.length === 0 ? (
-          <div className="p-4 flex items-center justify-center text-white/30 text-[12px]">
+          <div className="p-4 flex items-center justify-center text-slate-400 text-[12px]">
             <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />
             Scanning vault...
           </div>
         ) : error ? (
-          <div className="p-4 text-red-400/80 text-[12px]">
+          <div className="p-4 text-red-500 text-[12px]">
             <p>{error}</p>
             <button 
               onClick={loadVaultComponents}
-              className="mt-2 text-white/50 hover:text-white/70 underline"
+              className="mt-2 text-slate-500 hover:text-slate-700 underline"
             >
               Try again
             </button>
@@ -150,18 +149,18 @@ const SpioExplorer: React.FC = memo(() => {
             {categories.map((category) => (
               <div key={category.name}>
                 <motion.div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-white/[0.03] transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-100/40 transition-colors"
                   onClick={() => toggleCategory(category.name)}
                   whileHover={{ x: 2 }}
                 >
                   {expandedCategories[category.name] ? (
-                    <ChevronDown className="w-3.5 h-3.5 text-white/30" />
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
                   ) : (
-                    <ChevronRight className="w-3.5 h-3.5 text-white/30" />
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
                   )}
-                  <FolderOpen className="w-3.5 h-3.5 text-white/40" />
-                  <span className="text-white/60 text-[13px]">{category.name}</span>
-                  <span className="ml-auto text-white/30 text-[11px]">{category.components.length}</span>
+                  <FolderOpen className="w-3.5 h-3.5 text-slate-400" />
+                  <span className="text-slate-600 text-[13px]">{category.name}</span>
+                  <span className="ml-auto text-slate-400 text-[11px]">{category.components.length}</span>
                 </motion.div>
 
                 {expandedCategories[category.name] && (
@@ -174,12 +173,12 @@ const SpioExplorer: React.FC = memo(() => {
                     {category.components.map((component) => (
                       <motion.div
                         key={component.id}
-                        className="flex items-center gap-2 px-3 py-1.5 ml-4 cursor-pointer hover:bg-white/[0.04] transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 ml-4 cursor-pointer hover:bg-slate-100/50 transition-colors"
                         onClick={() => handleComponentSelect(component)}
                         whileHover={{ x: 2 }}
                       >
                         {getFileIcon(category.name)}
-                        <span className="text-white/50 text-[13px] truncate">{component.title}</span>
+                        <span className="text-slate-500 text-[13px] truncate">{component.title}</span>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -190,44 +189,44 @@ const SpioExplorer: React.FC = memo(() => {
         )}
       </div>
 
-      {/* Main Content - Premium Spacing */}
+      {/* Main Content - Light Spacing */}
       <div className="flex-1 bg-transparent p-8 overflow-y-auto">
         <div className="max-w-5xl mx-auto">
           <div className="mb-10">
             <div className="flex items-center justify-between mb-3">
-              <h1 className="text-2xl font-semibold text-white/80 tracking-tight">SPIO OS Vault</h1>
+              <h1 className="text-2xl font-semibold text-slate-700 tracking-tight">SPIO OS Vault</h1>
               {isLoading && (
-                <div className="flex items-center gap-2 text-white/40 text-[12px]">
+                <div className="flex items-center gap-2 text-slate-400 text-[12px]">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   Scanning...
                 </div>
               )}
             </div>
-            <p className="text-white/40 text-[13px]">
-              Auto-discovered components from <code className="px-1.5 py-0.5 bg-white/5 rounded border border-white/5">src/vault-data/</code>
+            <p className="text-slate-500 text-[13px]">
+              Auto-discovered components from <code className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200/60">src/vault-data/</code>
             </p>
           </div>
 
-          {/* Quick Stats - Premium Cards */}
+          {/* Quick Stats - Light Cards */}
           <div className="grid grid-cols-3 gap-3 mb-10">
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="glass-premium rounded-xl p-4 border border-white/5"
+                className="glass-premium rounded-xl p-4 border border-slate-200/60 bg-white/70"
               >
                 <div className="flex items-center gap-2 mb-2">
                   {getFileIcon(category.name)}
-                  <span className="text-white/40 text-[11px] uppercase tracking-wide">{category.name}</span>
+                  <span className="text-slate-400 text-[11px] uppercase tracking-wide">{category.name}</span>
                 </div>
-                <p className="text-2xl font-semibold text-white/70">{category.components.length}</p>
-                <p className="text-white/30 text-[11px] mt-0.5">components</p>
+                <p className="text-2xl font-semibold text-slate-700">{category.components.length}</p>
+                <p className="text-slate-400 text-[11px] mt-0.5">components</p>
               </div>
             ))}
           </div>
 
           {/* Loading State */}
           {isLoading && components.length === 0 && (
-            <div className="text-center py-16 text-white/30">
+            <div className="text-center py-16 text-slate-400">
               <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 opacity-50" />
               <p className="text-[13px]">Scanning vault-data folder...</p>
             </div>
@@ -236,10 +235,10 @@ const SpioExplorer: React.FC = memo(() => {
           {/* Error State */}
           {error && !isLoading && (
             <div className="text-center py-16">
-              <p className="text-red-400/70 mb-4 text-[13px]">{error}</p>
+              <p className="text-red-500 mb-4 text-[13px]">{error}</p>
               <button
                 onClick={loadVaultComponents}
-                className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white/60 text-[13px] transition-colors"
+                className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200/60 rounded-lg text-slate-600 text-[13px] transition-colors"
               >
                 Retry
               </button>
@@ -248,7 +247,7 @@ const SpioExplorer: React.FC = memo(() => {
 
           {/* Empty State */}
           {!isLoading && !error && components.length === 0 && (
-            <div className="text-center py-16 text-white/30">
+            <div className="text-center py-16 text-slate-400">
               <Folder className="w-10 h-10 mx-auto mb-3 opacity-40" />
               <p className="text-[13px] mb-1">No components found in vault</p>
               <p className="text-[12px]">Add .tsx files to src/vault-data/frontend/</p>
@@ -260,7 +259,7 @@ const SpioExplorer: React.FC = memo(() => {
             <div className="space-y-8">
               {categories.map((category) => (
                 <div key={category.name}>
-                  <h3 className="text-white/50 font-medium text-[13px] mb-4 flex items-center gap-2 uppercase tracking-wide">
+                  <h3 className="text-slate-600 font-medium text-[13px] mb-4 flex items-center gap-2 uppercase tracking-wide">
                     {getFileIcon(category.name)}
                     {category.name}
                   </h3>
@@ -268,23 +267,23 @@ const SpioExplorer: React.FC = memo(() => {
                     {category.components.map((component) => (
                       <motion.div
                         key={component.id}
-                        className="glass-premium rounded-xl p-5 cursor-pointer hover:bg-white/[0.04] hover:border-white/10 transition-all border border-white/5"
+                        className="glass-premium rounded-xl p-5 cursor-pointer hover:bg-white/80 hover:border-indigo-200/60 transition-all border border-slate-200/60"
                         onClick={() => handleComponentSelect(component)}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                       >
                         <div className="flex items-start justify-between mb-2.5">
-                          <h4 className="text-white/70 font-medium text-[14px]">{component.title}</h4>
+                          <h4 className="text-slate-700 font-medium text-[14px]">{component.title}</h4>
                           {component.isLive && (
-                            <span className="px-1.5 py-0.5 bg-white/5 text-white/40 text-[10px] rounded border border-white/5">
+                            <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] rounded border border-emerald-200/60">
                               Live
                             </span>
                           )}
                         </div>
                         {component.description && (
-                          <p className="text-white/30 text-[12px] mb-3 line-clamp-2">{component.description}</p>
+                          <p className="text-slate-500 text-[12px] mb-3 line-clamp-2">{component.description}</p>
                         )}
-                        <p className="text-white/25 text-[11px]">
+                        <p className="text-slate-400 text-[11px]">
                           Click to open
                         </p>
                       </motion.div>

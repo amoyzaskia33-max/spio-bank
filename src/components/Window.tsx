@@ -86,7 +86,7 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
 
   return (
     <motion.div
-      className="fixed rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] backdrop-blur-2xl"
+      className="fixed rounded-2xl overflow-hidden border border-slate-200/60 bg-white/80 backdrop-blur-2xl"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
@@ -94,8 +94,8 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
         top: isMaximized ? 0 : position.y,
         zIndex,
         boxShadow: isMaximized 
-          ? '0 0 0 1px rgba(255, 255, 255, 0.06), 0 16px 64px rgba(0, 0, 0, 0.5)'
-          : '0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(99, 102, 241, 0.08)',
+          ? '0 0 0 1px rgba(226, 232, 240, 0.6), 0 16px 50px rgba(0, 0, 0, 0.06)'
+          : '0 0 0 1px rgba(226, 232, 240, 0.5), 0 8px 30px rgba(0, 0, 0, 0.04), 0 0 50px rgba(99, 102, 241, 0.06)',
       }}
       initial={{ opacity: 0, scale: 0.96, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -107,42 +107,42 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
       onDragEnd={handleDragEnd}
       onMouseDown={() => focusWindow(id)}
     >
-      {/* Title Bar - Premium macOS Style */}
+      {/* Title Bar - Light macOS Style */}
       <div
-        className="flex items-center justify-between h-11 px-4 bg-gradient-to-b from-white/[0.03] to-transparent cursor-move select-none border-b border-white/5"
+        className="flex items-center justify-between h-11 px-4 bg-gradient-to-b from-white/60 to-white/40 backdrop-blur-sm cursor-move select-none border-b border-slate-200/50"
         onClick={handleTitleBarClick}
         onDoubleClick={handleMaximizeToggle}
       >
-        {/* macOS Window Controls (LEFT side) */}
+        {/* macOS Window Controls (LEFT side) - Pastel Colors */}
         <div className="flex items-center gap-2">
           <button
             onClick={handleClose}
-            className="group w-3 h-3 rounded-full bg-[#ff5f57] flex items-center justify-center transition-all hover:bg-[#ff5f57]/80"
+            className="group w-3 h-3 rounded-full bg-rose-400 flex items-center justify-center transition-all hover:bg-rose-500 shadow-sm"
             title="Close"
           >
-            <X className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
+            <X className="w-2 h-2 text-white/80 opacity-0 group-hover:opacity-100" />
           </button>
 
           <button
             onClick={handleMinimize}
-            className="group w-3 h-3 rounded-full bg-[#febc2e] flex items-center justify-center transition-all hover:bg-[#febc2e]/80"
+            className="group w-3 h-3 rounded-full bg-amber-400 flex items-center justify-center transition-all hover:bg-amber-500 shadow-sm"
             title="Minimize"
           >
-            <Minus className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
+            <Minus className="w-2 h-2 text-white/80 opacity-0 group-hover:opacity-100" />
           </button>
 
           <button
             onClick={handleMaximizeToggle}
-            className="group w-3 h-3 rounded-full bg-[#28c840] flex items-center justify-center transition-all hover:bg-[#28c840]/80"
+            className="group w-3 h-3 rounded-full bg-emerald-400 flex items-center justify-center transition-all hover:bg-emerald-500 shadow-sm"
             title={isMaximized ? 'Restore' : 'Maximize'}
           >
-            <Square className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
+            <Square className="w-2 h-2 text-white/80 opacity-0 group-hover:opacity-100" />
           </button>
         </div>
 
         {/* Window Title (CENTER) */}
         <div className="flex-1 text-center">
-          <span className="text-white/50 text-[11px] font-medium tracking-wide uppercase">{title}</span>
+          <span className="text-slate-500 text-[11px] font-medium tracking-wide uppercase">{title}</span>
         </div>
 
         {/* Empty space on RIGHT for balance */}
@@ -150,7 +150,7 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
       </div>
 
       {/* Window Content */}
-      <div className="h-[calc(100%-44px)] overflow-auto bg-transparent">{children}</div>
+      <div className="h-[calc(100%-44px)] overflow-auto bg-slate-50/50">{children}</div>
     </motion.div>
   );
 });

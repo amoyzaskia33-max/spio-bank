@@ -3,18 +3,18 @@
 @tailwind utilities;
 
 :root {
-  /* Premium Enterprise Dark Theme - Linear/Vercel Aesthetic */
-  --foreground-rgb: 220, 220, 230;
-  --foreground-muted-rgb: 160, 160, 180;
-  --background-start-rgb: 10, 10, 10;
-  --background-end-rgb: 18, 18, 18;
+  /* Soft Light Pastel Theme - Nordic Morning */
+  --foreground-rgb: 71, 85, 105;
+  --foreground-muted-rgb: 100, 116, 139;
+  --background-start-rgb: 248, 250, 252;
+  --background-end-rgb: 241, 245, 249;
 
-  /* Accent Colors - Refined */
+  /* Pastel Accent Colors - Soft & Eye-friendly */
   --accent-primary: 99, 102, 241;     /* Indigo 500 */
-  --accent-mint: 52, 211, 153;        /* Emerald 400 */
-  --accent-red: 244, 63, 94;          /* Rose 500 */
-  --accent-yellow: 250, 204, 21;      /* Amber 400 */
-  --accent-green: 34, 197, 94;        /* Green 500 */
+  --accent-mint: 16, 185, 129;        /* Emerald 500 */
+  --accent-red: 251, 113, 133;        /* Rose 400 */
+  --accent-yellow: 251, 191, 36;      /* Amber 400 */
+  --accent-green: 52, 211, 153;       /* Emerald 400 */
 }
 
 * {
@@ -29,7 +29,7 @@ body {
   max-height: 100vh;
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #0a0a0a 0%, #121212 50%, #0f0f0f 100%);
+  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E8F0F6 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -38,29 +38,29 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
-/* Custom Scrollbar - Minimal macOS Style */
+/* Custom Scrollbar - Light macOS Style */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.03);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* Selection */
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.2);
   color: rgb(var(--foreground-rgb));
 }
 
@@ -72,108 +72,127 @@ body {
 }
 
 /* ============================================
-   PREMIUM GLASS EFFECTS
-   Ultra-subtle translucency with hairline borders
+   LIGHT GLASS EFFECTS
+   Soft translucency with subtle borders
    ============================================ */
 
 /* Light glass - for panels and sidebars */
 .glass {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 /* Heavy glass - for modals and focused elements */
 .glass-heavy {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(32px);
   -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(226, 232, 240, 0.7);
 }
 
 /* Premium glass - for sidebars with extra subtle effect */
 .glass-premium {
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(28px) saturate(100%);
   -webkit-backdrop-filter: blur(28px) saturate(100%);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.6);
 }
 
 /* ============================================
-   PREMIUM SHADOWS
-   Soft, diffused glow for active/focused states
+   SOFT SHADOWS
+   Gentle, diffused shadows for light theme
    ============================================ */
 
-/* Window shadow - subtle elevation */
+/* Window shadow - soft elevation */
 .shadow-window {
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 80px rgba(0, 0, 0, 0.2);
+    0 0 0 1px rgba(226, 232, 240, 0.5),
+    0 8px 30px rgba(0, 0, 0, 0.04),
+    0 0 60px rgba(0, 0, 0, 0.02);
 }
 
 /* Window shadow large - for maximized/focused windows */
 .shadow-window-lg {
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 16px 64px rgba(0, 0, 0, 0.5),
-    0 0 120px rgba(0, 0, 0, 0.3);
+    0 0 0 1px rgba(226, 232, 240, 0.6),
+    0 16px 50px rgba(0, 0, 0, 0.06),
+    0 0 80px rgba(0, 0, 0, 0.03);
 }
 
-/* Active window glow - soft accent glow */
+/* Active window glow - soft pastel glow */
 .shadow-window-active {
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 0 60px rgba(99, 102, 241, 0.1);
+    0 0 0 1px rgba(226, 232, 240, 0.7),
+    0 8px 30px rgba(0, 0, 0, 0.05),
+    0 0 50px rgba(99, 102, 241, 0.08);
 }
 
 /* Dock shadow */
 .shadow-dock {
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 12px 48px rgba(0, 0, 0, 0.5),
-    0 0 80px rgba(0, 0, 0, 0.3);
+    0 0 0 1px rgba(226, 232, 240, 0.6),
+    0 12px 40px rgba(0, 0, 0, 0.06),
+    0 0 60px rgba(0, 0, 0, 0.04);
 }
 
 /* Soft diffused shadow for cards */
 .shadow-soft-diffused {
   box-shadow: 
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 40px 120px rgba(0, 0, 0, 0.5);
+    0 0 0 1px rgba(226, 232, 240, 0.5),
+    0 30px 80px rgba(0, 0, 0, 0.05);
 }
 
 /* ============================================
    UTILITY CLASSES
    ============================================ */
 
-/* Hairline border utility */
+/* Hairline border utility - light theme */
 .border-hairline {
   border-width: 1px;
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(226, 232, 240, 0.6);
 }
 
-/* Subtle hover effect */
+/* Subtle hover effect - light theme */
 .hover-subtle {
   transition: background-color 120ms ease;
 }
 .hover-subtle:hover {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgba(99, 102, 241, 0.05);
 }
 
-/* Text gradient for headings */
+/* Text gradient for headings - light theme */
 .text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #a5a5a5 100%);
+  background: linear-gradient(135deg, #475569 0%, #64748b 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Accent glow for buttons */
+/* Pastel accent glow for buttons */
 .accent-glow {
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
 }
 .accent-glow:hover {
-  box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+}
+
+/* ============================================
+   PASTEL BACKGROUND SHAPES
+   Decorative blurred shapes for visual interest
+   ============================================ */
+.pastel-shape-1 {
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
+.pastel-shape-2 {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
+.pastel-shape-3 {
+  background: radial-gradient(circle, rgba(251, 113, 133, 0.06) 0%, transparent 70%);
+  filter: blur(80px);
 }
