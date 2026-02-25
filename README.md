@@ -1,4 +1,7 @@
-# NEXUS OS Auto-Vault
+# SPIO OS Auto-Vault
+
+[![E2E Tests](https://github.com/amoyzaskia33-max/spio-bank/actions/workflows/e2e-tests.yml/badge.svg)](https://github.com/amoyzaskia33-max/spio-bank/actions/workflows/e2e-tests.yml)
+[![CI](https://github.com/amoyzaskia33-max/spio-bank/actions/workflows/ci.yml/badge.svg)](https://github.com/amoyzaskia33-max/spio-bank/actions/workflows/ci.yml)
 
 Web-Based Operating System Interface - Private Boilerplate Bank
 
@@ -21,9 +24,9 @@ Web-Based Operating System Interface - Private Boilerplate Bank
 
 ### Core Applications
 
-#### 1. Nexus Explorer
+#### 1. SPIO Explorer
 - File manager UI with folder tree navigation
-- Categories: Frontend, Backend, AI Prompts
+- Categories: Frontend, Backend, Prompts
 - Click files to preview content
 - Opens code snippets in Code Terminal
 
@@ -39,7 +42,13 @@ Web-Based Operating System Interface - Private Boilerplate Bank
 - View code snippets
 - Responsive device preview (Full, Tablet, Mobile)
 - Toggle between Preview and Code view
-- Components: Button, Card, Input, Badge
+- Components: Button, Card, Input, Badge, Modal, Alert Banner, Skeleton Loader
+
+### SPIO Librarian
+- Auto-sync boilerplate components
+- Drop files in `vault/raw-experiments/`
+- Run `npm run sync-vault`
+- Components automatically added to registry
 
 ## 🛠️ Tech Stack
 
@@ -48,6 +57,8 @@ Web-Based Operating System Interface - Private Boilerplate Bank
 - **Animations:** Framer Motion
 - **State Management:** Zustand
 - **Icons:** Lucide React
+- **Testing:** Playwright (E2E)
+- **CI/CD:** GitHub Actions
 
 ## 📦 Installation
 
@@ -65,7 +76,23 @@ npm run build
 npm start
 ```
 
-## 🏗️ Project Structure
+## 🧪 Testing
+
+```bash
+# Run E2E tests
+npm run test:e2e
+
+# Run tests with UI
+npm run test:e2e:ui
+
+# Run tests in headed mode
+npm run test:e2e:headed
+
+# View test report
+npm run test:e2e:report
+```
+
+## 📁 Project Structure
 
 ```
 src/
@@ -75,43 +102,55 @@ src/
 │   └── page.tsx
 ├── components/
 │   ├── apps/
-│   │   ├── NexusExplorer.tsx
+│   │   ├── SpioExplorer.tsx
 │   │   ├── CodeTerminal.tsx
 │   │   └── UICanvas.tsx
 │   ├── Window.tsx
 │   ├── Desktop.tsx
 │   ├── Taskbar.tsx
 │   └── BootScreen.tsx
+├── data/
+│   └── spio-registry.tsx
 └── store/
     └── useOSStore.ts
 ```
 
-## 🎮 Usage
+## 🤖 SPIO Librarian
 
-1. **Boot Sequence** - Wait 1.5 seconds for the fake boot to complete
-2. **Open Apps** - Click icons in the taskbar to open applications
-3. **Window Management**:
-   - Drag windows by the title bar
-   - Double-click title bar to maximize/restore
-   - Use window controls (Minimize, Maximize, Close)
-   - Click a window to bring it to front
-4. **Nexus Explorer** - Browse files, click to preview in Code Terminal
-5. **Code Terminal** - View/copy code snippets, create new ones
-6. **UI Canvas** - Preview components, toggle device sizes
+Automated boilerplate entry system:
+
+```bash
+# Sync new components
+npm run sync-vault
+
+# Deploy (sync + build)
+npm run deploy
+```
+
+### Usage:
+1. Drop `.tsx`, `.ts`, `.js`, `.txt` files in `vault/raw-experiments/`
+2. (Optional) Add frontmatter for metadata
+3. Run `npm run sync-vault`
+4. Components appear in SPIO Explorer
 
 ## 🚀 Deployment (Dokploy)
 
-This project is Dokploy-compatible. Standard Next.js build scripts are used:
+This project is Dokploy-compatible:
 
-```json
-{
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  }
-}
-```
+1. Connect GitHub repo to Dokploy
+2. Build command: `npm run build`
+3. Start command: `npm start`
+4. Auto-deploy on push
+
+## 📊 Test Coverage
+
+- **38 E2E Tests** - 100% pass rate
+- Boot Sequence (4 tests)
+- Window Manager (5 tests)
+- SPIO Explorer (7 tests)
+- Code Terminal (7 tests)
+- UI Canvas (10 tests)
+- Librarian Integration (5 tests)
 
 ## 📝 Scripts
 
@@ -121,6 +160,11 @@ This project is Dokploy-compatible. Standard Next.js build scripts are used:
 | `npm run build` | Build for production |
 | `npm start` | Start production server |
 | `npm run lint` | Run ESLint |
+| `npm run sync-vault` | Sync vault components |
+| `npm run deploy` | Sync + Build |
+| `npm run test:e2e` | Run E2E tests |
+| `npm run test:e2e:headed` | Run tests with browser |
+| `npm run test:e2e:report` | View HTML report |
 
 ## 🎨 Design System
 
@@ -137,6 +181,16 @@ This project is Dokploy-compatible. Standard Next.js build scripts are used:
 - Window open/close: Scale + opacity fade
 - Drag: Smooth with Framer Motion
 - Hover effects: Scale and glow
+
+## 📄 Documentation
+
+- [README.md](README.md) - This file
+- [LIBRARIAN.md](docs/LIBRARIAN.md) - Librarian usage guide
+
+## 🔗 Links
+
+- **GitHub:** https://github.com/amoyzaskia33-max/spio-bank
+- **Actions:** https://github.com/amoyzaskia33-max/spio-bank/actions
 
 ## 📄 License
 
