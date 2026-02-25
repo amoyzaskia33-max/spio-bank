@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { shallow } from 'zustand/shallow';
 
 export interface WindowState {
   id: string;
@@ -27,10 +28,10 @@ interface OSState {
   topZIndex: number;
   isBooted: boolean;
   bootLogs: string[];
-  
+
   // Phase 2: Active Component State
   activeComponentId: string | null;
-  
+
   // Phase 5: Live Preview Engine
   draftCode: string | null;
   livePreviewEnabled: boolean;
@@ -46,11 +47,11 @@ interface OSState {
   updateWindowPosition: (windowId: string, position: { x: number; y: number }) => void;
   updateWindowContent: (windowId: string, content: React.ReactNode) => void;
   setBootComplete: () => void;
-  
+
   // Phase 2: Component Actions
   setActiveComponent: (id: string | null) => void;
   clearActiveComponent: () => void;
-  
+
   // Phase 5: Live Preview Actions
   setDraftCode: (code: string | null) => void;
   setLivePreviewEnabled: (enabled: boolean) => void;
@@ -81,6 +82,7 @@ const APP_REGISTRY: Record<string, AppDefinition> = {
   },
 };
 
+// Optimized store with selective updates
 export const useOSStore = create<OSState>((set, get) => ({
   windows: {},
   activeWindowId: null,
@@ -188,11 +190,15 @@ export const useOSStore = create<OSState>((set, get) => ({
     }));
   },
 
+  // Optimized: Only update position, no other state changes
   updateWindowPosition: (windowId: string, position: { x: number; y: number }) => {
     set((state) => ({
       windows: {
         ...state.windows,
-        [windowId]: { ...state.windows[windowId], position },
+        [windowId]: { 
+          ...state.windows[windowId], 
+          position: { x: Math.round(position.x), y: Math.round(position.y) },
+        },
       },
     }));
   },
@@ -218,16 +224,16 @@ export const useOSStore = create<OSState>((set, get) => ({
   clearActiveComponent: () => {
     set({ activeComponentId: null });
   },
-  
+
   // Phase 5: Live Preview Actions
   setDraftCode: (code: string | null) => {
     set({ draftCode: code });
   },
-  
+
   setLivePreviewEnabled: (enabled: boolean) => {
     set({ livePreviewEnabled: enabled });
   },
-  
+
   setPreviewError: (error: string | null) => {
     set({ previewError: error });
   },
@@ -243,5 +249,8 @@ export const APP_IDS = {
   CODE_TERMINAL: 'code-terminal',
   UI_CANVAS: 'ui-canvas',
 } as const;
+
+// Export shallow comparison for optimized re-renders
+export { shallow };
 
 export default useOSStore;

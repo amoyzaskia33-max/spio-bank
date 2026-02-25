@@ -1,32 +1,35 @@
 'use client';
 
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { Folder, Terminal, LayoutTemplate } from 'lucide-react';
 import useOSStore, { APP_IDS, getAppDefinition } from '@/store/useOSStore';
-import SpioExplorer from './apps/SpioExplorer';
-import CodeTerminal from './apps/CodeTerminal';
-import UICanvas from './apps/UICanvas';
 
-const Taskbar: React.FC = () => {
+// Lazy load app components
+const SpioExplorer = dynamic(() => import('./apps/SpioExplorer'), { ssr: false });
+const CodeTerminal = dynamic(() => import('./apps/CodeTerminal'), { ssr: false });
+const UICanvas = dynamic(() => import('./apps/UICanvas'), { ssr: false });
+
+const Taskbar: React.FC = memo(() => {
   const { openWindow, windows } = useOSStore();
 
   const apps = [
-    { 
-      id: APP_IDS.SPIO_EXPLORER, 
-      icon: Folder, 
+    {
+      id: APP_IDS.SPIO_EXPLORER,
+      icon: Folder,
       label: 'SPIO Explorer',
       component: <SpioExplorer />
     },
-    { 
-      id: APP_IDS.CODE_TERMINAL, 
-      icon: Terminal, 
+    {
+      id: APP_IDS.CODE_TERMINAL,
+      icon: Terminal,
       label: 'Code Terminal',
       component: <CodeTerminal />
     },
-    { 
-      id: APP_IDS.UI_CANVAS, 
-      icon: LayoutTemplate, 
+    {
+      id: APP_IDS.UI_CANVAS,
+      icon: LayoutTemplate,
       label: 'UI Canvas',
       component: <UICanvas />
     },
@@ -44,11 +47,11 @@ const Taskbar: React.FC = () => {
       className="absolute bottom-4 left-0 right-0 flex items-center justify-center px-4"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* macOS-style Floating Dock */}
-      <div className="glass-premium rounded-dock px-3 py-2 shadow-dock border border-white/15">
-        <div className="flex items-center gap-2">
+      {/* Premium Floating Dock */}
+      <div className="glass-heavy rounded-2xl px-2.5 py-2 shadow-dock border border-white/5">
+        <div className="flex items-center gap-1.5">
           {apps.map((app) => {
             const isOpen = windows[app.id]?.isOpen;
             const isActive = windows[app.id] && !windows[app.id].isMinimized;
@@ -57,28 +60,28 @@ const Taskbar: React.FC = () => {
               <motion.button
                 key={app.id}
                 onClick={() => handleAppClick(app.id, app.component)}
-                className={`relative flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-200 ${
+                className={`relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-white/15 shadow-lg border border-white/10'
-                    : 'hover:bg-white/5 border border-transparent'
+                    ? 'bg-white/[0.06] border border-white/5'
+                    : 'hover:bg-white/[0.04] border border-transparent'
                 }`}
-                whileHover={{ scale: 1.1, y: -4 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: 1.08, y: -2 }}
+                whileTap={{ scale: 0.96 }}
                 title={app.label}
               >
                 <app.icon
-                  className={`w-7 h-7 ${
-                    isActive ? 'text-spio-accent' : 'text-spio-text-subtle'
+                  className={`w-6 h-6 ${
+                    isActive ? 'text-white/80' : 'text-white/50'
                   }`}
                   strokeWidth={1.5}
                 />
-                
+
                 {/* Active indicator dot */}
                 {isOpen && (
                   <motion.div
-                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-spio-accent shadow-lg shadow-spio-accent/50"
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
+                    className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-white/60"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
                   />
                 )}
               </motion.button>
@@ -88,6 +91,8 @@ const Taskbar: React.FC = () => {
       </div>
     </motion.div>
   );
-};
+});
+
+Taskbar.displayName = 'Taskbar';
 
 export default Taskbar;

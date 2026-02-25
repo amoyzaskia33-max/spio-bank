@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, memo } from 'react';
 import { motion, PanInfo } from 'framer-motion';
 import { X, Minus, Square } from 'lucide-react';
 import useOSStore, { WindowState } from '@/store/useOSStore';
@@ -10,7 +10,7 @@ interface WindowProps {
   children: React.ReactNode;
 }
 
-const Window: React.FC<WindowProps> = ({ windowState, children }) => {
+const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
   const {
     id,
     position,
@@ -86,27 +86,30 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
 
   return (
     <motion.div
-      className="fixed rounded-3xl overflow-hidden shadow-window-lg border border-white/10 bg-spio-surface/95 backdrop-blur-glass-heavy"
+      className="fixed rounded-2xl overflow-hidden border border-white/5 bg-white/[0.02] backdrop-blur-2xl"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
         left: isMaximized ? 0 : position.x,
         top: isMaximized ? 0 : position.y,
         zIndex,
+        boxShadow: isMaximized 
+          ? '0 0 0 1px rgba(255, 255, 255, 0.06), 0 16px 64px rgba(0, 0, 0, 0.5)'
+          : '0 0 0 1px rgba(255, 255, 255, 0.05), 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 60px rgba(99, 102, 241, 0.08)',
       }}
-      initial={{ opacity: 0, scale: 0.95, y: 20 }}
+      initial={{ opacity: 0, scale: 0.96, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.95, y: 20 }}
-      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+      exit={{ opacity: 0, scale: 0.96, y: 16 }}
+      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
       drag={!isMaximized}
       dragMomentum={false}
       dragElastic={0}
       onDragEnd={handleDragEnd}
       onMouseDown={() => focusWindow(id)}
     >
-      {/* Title Bar - macOS Style (controls on LEFT) */}
+      {/* Title Bar - Premium macOS Style */}
       <div
-        className="flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/5 to-transparent cursor-move select-none border-b border-white/5"
+        className="flex items-center justify-between h-11 px-4 bg-gradient-to-b from-white/[0.03] to-transparent cursor-move select-none border-b border-white/5"
         onClick={handleTitleBarClick}
         onDoubleClick={handleMaximizeToggle}
       >
@@ -114,23 +117,23 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
         <div className="flex items-center gap-2">
           <button
             onClick={handleClose}
-            className="group w-3 h-3 rounded-full bg-spio-red flex items-center justify-center transition-all hover:bg-spio-red/80 shadow-md"
+            className="group w-3 h-3 rounded-full bg-[#ff5f57] flex items-center justify-center transition-all hover:bg-[#ff5f57]/80"
             title="Close"
           >
             <X className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
           </button>
-          
+
           <button
             onClick={handleMinimize}
-            className="group w-3 h-3 rounded-full bg-spio-yellow flex items-center justify-center transition-all hover:bg-spio-yellow/80 shadow-md"
+            className="group w-3 h-3 rounded-full bg-[#febc2e] flex items-center justify-center transition-all hover:bg-[#febc2e]/80"
             title="Minimize"
           >
             <Minus className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
           </button>
-          
+
           <button
             onClick={handleMaximizeToggle}
-            className="group w-3 h-3 rounded-full bg-spio-green flex items-center justify-center transition-all hover:bg-spio-green/80 shadow-md"
+            className="group w-3 h-3 rounded-full bg-[#28c840] flex items-center justify-center transition-all hover:bg-[#28c840]/80"
             title={isMaximized ? 'Restore' : 'Maximize'}
           >
             <Square className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
@@ -139,17 +142,19 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
 
         {/* Window Title (CENTER) */}
         <div className="flex-1 text-center">
-          <span className="text-spio-text/70 text-xs font-medium tracking-wide uppercase">{title}</span>
+          <span className="text-white/50 text-[11px] font-medium tracking-wide uppercase">{title}</span>
         </div>
 
         {/* Empty space on RIGHT for balance */}
-        <div className="w-16" />
+        <div className="w-12" />
       </div>
 
       {/* Window Content */}
-      <div className="h-[calc(100%-48px)] overflow-auto bg-spio-base/30">{children}</div>
+      <div className="h-[calc(100%-44px)] overflow-auto bg-transparent">{children}</div>
     </motion.div>
   );
-};
+});
+
+Window.displayName = 'Window';
 
 export default Window;
