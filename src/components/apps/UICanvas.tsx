@@ -144,16 +144,16 @@ const UICanvas: React.FC = () => {
 
   return (
     <div className="flex h-full">
-      {/* Components Sidebar - Light Theme */}
-      <div className="w-60 border-r border-slate-200/60 bg-white/60 backdrop-blur-xl flex flex-col">
-        <div className="p-3 border-b border-slate-200/60">
-          <h2 className="text-slate-700 font-medium text-sm flex items-center gap-2">
+      {/* Components Sidebar - Crown Glass */}
+      <div className="w-64 border-r border-white/60 bg-white/50 backdrop-blur-3xl flex flex-col">
+        <div className="p-4 border-b border-white/60">
+          <h2 className="text-slate-800 font-semibold text-sm tracking-tight flex items-center gap-2">
             <LayoutTemplate className="w-4 h-4 text-indigo-500" />
             UI Components
           </h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto py-2">
+        <div className="flex-1 overflow-y-auto py-3 px-2">
           {isLoading ? (
             <div className="flex items-center justify-center py-8 text-slate-400 text-xs">
               <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -163,10 +163,10 @@ const UICanvas: React.FC = () => {
             previews.map((preview) => (
               <motion.div
                 key={preview.id}
-                className={`px-3 py-3 cursor-pointer transition-colors ${
+                className={`px-3 py-3 cursor-pointer transition-all rounded-xl ${
                   selectedComponent?.id === preview.id
-                    ? 'bg-indigo-50 border-l-2 border-indigo-400'
-                    : 'hover:bg-slate-50 border-l-2 border-transparent'
+                    ? 'bg-white/80 border border-slate-100 shadow-sm'
+                    : 'hover:bg-white/60 border border-transparent'
                 }`}
                 onClick={() => {
                   setSelectedComponent(preview);
@@ -177,28 +177,28 @@ const UICanvas: React.FC = () => {
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-slate-700 font-medium text-sm">{preview.name}</p>
                   {preview.component && (
-                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded border border-emerald-200">
+                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-semibold rounded-lg border border-emerald-200">
                       Live
                     </span>
                   )}
                 </div>
-                <p className="text-slate-500 text-xs line-clamp-2">{preview.description}</p>
+                <p className="text-slate-500 text-xs line-clamp-2 font-medium">{preview.description}</p>
               </motion.div>
             ))
           )}
 
-          <div className="px-3 py-2 mt-2 border-t border-slate-200/60">
-            <p className="text-slate-400 text-xs">
+          <div className="px-3 py-3 mt-2 border-t border-white/60">
+            <p className="text-slate-400 text-xs font-medium">
               💡 Edit code in Code Terminal to see live changes
             </p>
           </div>
         </div>
       </div>
 
-      {/* Main Canvas - Light Theme */}
-      <div className="flex-1 flex flex-col bg-slate-50/50">
-        {/* Toolbar */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200/60 bg-white/60 backdrop-blur-sm">
+      {/* Main Canvas - Crown Glass */}
+      <div className="flex-1 flex flex-col bg-transparent">
+        {/* Toolbar - Crown Glass */}
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-white/50 backdrop-blur-3xl">
           <div className="flex items-center gap-2">
             {selectedComponent && (
               <>

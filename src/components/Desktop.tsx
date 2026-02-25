@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback, Suspense } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import useOSStore, { APP_IDS, getAppDefinition } from '@/store/useOSStore';
@@ -9,7 +9,7 @@ import Taskbar from './Taskbar';
 import BootScreen from './BootScreen';
 import SpioExplorer from './apps/SpioExplorer';
 
-// Lazy load heavy components with SSR disabled
+// Lazy load heavy components
 const CodeTerminal = dynamic(() => import('./apps/CodeTerminal'), { 
   ssr: false,
   loading: () => (
@@ -65,36 +65,24 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#FAFAFA]">
-      {/* Premium Mesh Gradient Background - Ultra Subtle */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100" />
-      
-      {/* Decorative Blur Shapes - Stripe-style depth */}
+    <div className="relative w-screen h-screen overflow-hidden bg-[#F8F9FA]">
+      {/* MESH GRADIENT BACKGROUNDS - Decorative Light Patches */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Indigo blur - top left */}
+        {/* Blue light patch - top left */}
         <div
-          className="absolute -top-1/3 -left-1/4 w-2/3 h-2/3 rounded-full"
+          className="absolute -top-1/3 -left-1/4 w-[800px] h-[800px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%)',
-            filter: 'blur(80px)',
+            background: 'radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%)',
+            filter: 'blur(120px)',
           }}
         />
         
-        {/* Purple blur - top right */}
+        {/* Purple light patch - bottom right */}
         <div
-          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 rounded-full"
+          className="absolute -bottom-1/3 -right-1/4 w-[800px] h-[800px] rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%)',
-            filter: 'blur(80px)',
-          }}
-        />
-        
-        {/* Teal blur - bottom */}
-        <div
-          className="absolute -bottom-1/3 left-1/4 w-1/2 h-1/2 rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.04) 0%, transparent 70%)',
-            filter: 'blur(80px)',
+            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%)',
+            filter: 'blur(120px)',
           }}
         />
       </div>

@@ -103,62 +103,38 @@ const SpioExplorer: React.FC = memo(() => {
     }
   }, []);
 
-  const stats = {
-    Frontend: components.filter(c => c.category === 'Frontend').length,
-    Backend: components.filter(c => c.category === 'Backend').length,
-    Prompt: components.filter(c => c.category === 'Prompt').length,
-  };
-
   return (
     <div className="flex h-full">
-      {/* Sidebar - Premium Glass */}
-      <div className="w-64 border-r border-slate-200/70 bg-white/70 backdrop-blur-2xl overflow-y-auto">
-        <div className="p-4 border-b border-slate-200/70 flex items-center justify-between">
-          <h2 className="text-slate-700 font-semibold text-[13px] tracking-tight flex items-center gap-2">
+      {/* Sidebar - Crown Glass */}
+      <div className="w-64 border-r border-white/60 bg-white/50 backdrop-blur-3xl overflow-y-auto">
+        <div className="p-6 border-b border-white/60">
+          <h2 className="text-slate-800 font-semibold text-[13px] tracking-tight flex items-center gap-2">
             <Folder className="w-4 h-4 text-slate-400" strokeWidth={1.5} />
             SPIO Explorer
           </h2>
-          <button
-            onClick={loadVaultComponents}
-            disabled={isLoading}
-            className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors disabled:opacity-50"
-            title="Refresh vault"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 text-slate-400 ${isLoading ? 'animate-spin' : ''}`} />
-          </button>
         </div>
 
         {isLoading && components.length === 0 ? (
-          <div className="p-4 flex items-center justify-center text-slate-400 text-[12px]">
-            <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />
+          <div className="p-6 flex items-center justify-center text-slate-400 text-[12px]">
+            <Loader2 className="w-4 h-4 animate-spin mr-2" />
             Scanning vault...
           </div>
-        ) : error ? (
-          <div className="p-4 text-red-500 text-[12px]">
-            <p>{error}</p>
-            <button 
-              onClick={loadVaultComponents}
-              className="mt-2 text-slate-500 hover:text-slate-700 underline"
-            >
-              Try again
-            </button>
-          </div>
         ) : (
-          <div className="py-3">
+          <div className="py-4 px-3">
             {categories.map((category) => (
               <div key={category.name}>
                 <motion.div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer hover:bg-slate-50 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl hover:bg-white/60 transition-colors"
                   onClick={() => toggleCategory(category.name)}
                   whileHover={{ x: 2 }}
                 >
                   {expandedCategories[category.name] ? (
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
                   ) : (
-                    <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                    <ChevronRight className="w-4 h-4 text-slate-400" />
                   )}
-                  <FolderOpen className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="text-slate-600 text-[13px] font-medium">{category.name}</span>
+                  <FolderOpen className="w-4 h-4 text-slate-400" />
+                  <span className="text-slate-700 text-[13px] font-medium">{category.name}</span>
                   <span className="ml-auto text-slate-400 text-[11px] font-medium">{category.components.length}</span>
                 </motion.div>
 
@@ -172,12 +148,12 @@ const SpioExplorer: React.FC = memo(() => {
                     {category.components.map((component) => (
                       <motion.div
                         key={component.id}
-                        className="flex items-center gap-2 px-3 py-1.5 ml-4 cursor-pointer hover:bg-slate-50 transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 ml-4 cursor-pointer rounded-xl hover:bg-white/60 transition-colors"
                         onClick={() => handleComponentSelect(component)}
                         whileHover={{ x: 2 }}
                       >
                         {getFileIcon(category.name)}
-                        <span className="text-slate-500 text-[13px] truncate">{component.title}</span>
+                        <span className="text-slate-600 text-[13px] truncate">{component.title}</span>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -186,110 +162,107 @@ const SpioExplorer: React.FC = memo(() => {
             ))}
           </div>
         )}
+
+        {/* Refresh button */}
+        <div className="p-4 border-t border-white/60">
+          <button
+            onClick={loadVaultComponents}
+            disabled={isLoading}
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/80 hover:bg-white rounded-xl border border-slate-100 text-slate-600 text-[12px] font-medium transition-all disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            {isLoading ? 'Scanning...' : 'Refresh Vault'}
+          </button>
+        </div>
       </div>
 
       {/* Main Content - Premium Spacing */}
       <div className="flex-1 bg-transparent p-8 overflow-y-auto">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-3">
-              <h1 className="text-2xl font-semibold text-slate-800 tracking-tight">SPIO OS Vault</h1>
-              {isLoading && (
-                <div className="flex items-center gap-2 text-slate-400 text-[12px]">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  Scanning...
-                </div>
-              )}
-            </div>
-            <p className="text-slate-500 text-[13px]">
-              Auto-discovered components from <code className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200/70 text-slate-600">src/vault-data/</code>
+            <h1 className="text-3xl font-semibold text-slate-800 tracking-tight mb-3">SPIO OS Vault</h1>
+            <p className="text-slate-500 text-[14px] font-medium">
+              Auto-discovered components from <code className="px-2 py-0.5 bg-white/80 rounded-lg border border-slate-100 text-slate-600">src/vault-data/</code>
             </p>
-          </div>
-
-          {/* Quick Stats - Premium Cards */}
-          <div className="grid grid-cols-3 gap-3 mb-10">
-            {categories.map((category) => (
-              <div
-                key={category.name}
-                className="glass-premium rounded-2xl p-4 border border-slate-200/70 shadow-soft"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  {getFileIcon(category.name)}
-                  <span className="text-slate-400 text-[11px] font-medium uppercase tracking-wide">{category.name}</span>
-                </div>
-                <p className="text-2xl font-semibold text-slate-800 tracking-tight">{category.components.length}</p>
-                <p className="text-slate-400 text-[11px] mt-0.5">components</p>
-              </div>
-            ))}
           </div>
 
           {/* Loading State */}
           {isLoading && components.length === 0 && (
-            <div className="text-center py-16 text-slate-400">
-              <Loader2 className="w-8 h-8 animate-spin mx-auto mb-3 opacity-50" />
-              <p className="text-[13px]">Scanning vault-data folder...</p>
+            <div className="text-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin mx-auto mb-4 text-slate-300" />
+              <p className="text-slate-400 text-[14px] font-medium">Scanning vault-data folder...</p>
             </div>
           )}
 
-          {/* Error State */}
-          {error && !isLoading && (
-            <div className="text-center py-16">
-              <p className="text-red-500 mb-4 text-[13px]">{error}</p>
-              <button
-                onClick={loadVaultComponents}
-                className="px-4 py-2 bg-white hover:bg-slate-50 border border-slate-200/70 rounded-lg text-slate-600 text-[13px] font-medium transition-colors shadow-sm"
-              >
-                Retry
-              </button>
-            </div>
+          {/* Stats Grid */}
+          {!isLoading && components.length > 0 && (
+            <>
+              <div className="grid grid-cols-3 gap-4 mb-10">
+                {categories.map((category) => (
+                  <div
+                    key={category.name}
+                    className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      {getFileIcon(category.name)}
+                      <span className="text-slate-500 text-[12px] font-medium uppercase tracking-wide">{category.name}</span>
+                    </div>
+                    <p className="text-3xl font-semibold text-slate-800 tracking-tight">{category.components.length}</p>
+                    <p className="text-slate-400 text-[12px] font-medium mt-1">components</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Components Grid */}
+              <div className="space-y-10">
+                {categories.map((category) => (
+                  <div key={category.name}>
+                    <div className="flex items-center gap-3 mb-5">
+                      {getFileIcon(category.name)}
+                      <h3 className="text-slate-700 font-semibold text-[14px] uppercase tracking-wide">{category.name}</h3>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {category.components.map((component) => (
+                        <motion.div
+                          key={component.id}
+                          // CRITICAL: INNER ELEMENT CLASSES - EXACT SPEC
+                          className="bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 rounded-2xl p-6 cursor-pointer"
+                          onClick={() => handleComponentSelect(component)}
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                        >
+                          <div className="flex items-start justify-between mb-3">
+                            <h4 className="text-slate-800 font-semibold text-[15px] tracking-tight">{component.title}</h4>
+                            {component.isLive && (
+                              <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-semibold rounded-lg border border-emerald-200">
+                                LIVE
+                              </span>
+                            )}
+                          </div>
+                          {component.description && (
+                            <p className="text-slate-500 text-[13px] font-medium leading-relaxed mb-4 line-clamp-2">
+                              {component.description}
+                            </p>
+                          )}
+                          <div className="flex items-center gap-2 text-slate-400 text-[11px] font-medium">
+                            <span>Click to open</span>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
           )}
 
           {/* Empty State */}
           {!isLoading && !error && components.length === 0 && (
-            <div className="text-center py-16 text-slate-400">
-              <Folder className="w-10 h-10 mx-auto mb-3 opacity-40" />
-              <p className="text-[13px] mb-1">No components found in vault</p>
-              <p className="text-[12px]">Add .tsx files to src/vault-data/frontend/</p>
-            </div>
-          )}
-
-          {/* All Components Grid - Premium Cards */}
-          {!isLoading && !error && components.length > 0 && (
-            <div className="space-y-8">
-              {categories.map((category) => (
-                <div key={category.name}>
-                  <h3 className="text-slate-600 font-semibold text-[13px] mb-4 flex items-center gap-2 uppercase tracking-wide">
-                    {getFileIcon(category.name)}
-                    {category.name}
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {category.components.map((component) => (
-                      <motion.div
-                        key={component.id}
-                        className="glass-premium rounded-2xl p-5 cursor-pointer hover:bg-white hover:border-indigo-200/70 hover:shadow-soft transition-all border border-slate-200/70"
-                        onClick={() => handleComponentSelect(component)}
-                        whileHover={{ scale: 1.01 }}
-                        whileTap={{ scale: 0.99 }}
-                      >
-                        <div className="flex items-start justify-between mb-2.5">
-                          <h4 className="text-slate-800 font-semibold text-[14px] tracking-tight">{component.title}</h4>
-                          {component.isLive && (
-                            <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-medium rounded border border-emerald-200/70">
-                              Live
-                            </span>
-                          )}
-                        </div>
-                        {component.description && (
-                          <p className="text-slate-500 text-[12px] mb-3 line-clamp-2 leading-relaxed">{component.description}</p>
-                        )}
-                        <p className="text-slate-400 text-[11px] font-medium">
-                          Click to open
-                        </p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+            <div className="text-center py-20">
+              <Folder className="w-12 h-12 mx-auto mb-4 text-slate-300" />
+              <p className="text-slate-500 text-[14px] font-medium mb-1">No components found</p>
+              <p className="text-slate-400 text-[13px]">Add .tsx files to src/vault-data/frontend/</p>
             </div>
           )}
         </div>

@@ -248,12 +248,12 @@ const CodeTerminal: React.FC = () => {
 
   return (
     <div className="flex h-full">
-      {/* Sidebar */}
-      <div className={`border-r border-slate-200/60 bg-white/60 backdrop-blur-xl flex flex-col transition-all duration-300 ${
+      {/* Sidebar - Crown Glass */}
+      <div className={`border-r border-white/60 bg-white/50 backdrop-blur-3xl flex flex-col transition-all duration-300 ${
         isInteractiveMode ? 'w-48' : 'w-64'
       }`}>
-        <div className="p-3 border-b border-slate-200/60 flex items-center justify-between">
-          <h2 className="text-slate-700 font-medium text-sm flex items-center gap-2">
+        <div className="p-4 border-b border-white/60 flex items-center justify-between">
+          <h2 className="text-slate-800 font-semibold text-sm tracking-tight flex items-center gap-2">
             <Code2 className="w-4 h-4 text-indigo-500" />
             {!isInteractiveMode && 'Code Library'}
           </h2>
@@ -263,7 +263,7 @@ const CodeTerminal: React.FC = () => {
             className={`p-1.5 rounded-lg transition-colors ${
               isInteractiveMode
                 ? 'bg-indigo-100 text-indigo-600'
-                : 'hover:bg-slate-100 text-slate-400'
+                : 'hover:bg-white/60 text-slate-400'
             }`}
             title="Toggle Interactive Mode"
           >
@@ -272,7 +272,7 @@ const CodeTerminal: React.FC = () => {
         </div>
 
         {!isInteractiveMode && (
-          <div className="flex-1 overflow-y-auto py-2">
+          <div className="flex-1 overflow-y-auto py-3 px-2">
             {isLoading ? (
               <div className="flex items-center justify-center py-8 text-slate-400 text-xs">
                 <Loader2 className="w-4 h-4 animate-spin mr-2" />
@@ -285,16 +285,16 @@ const CodeTerminal: React.FC = () => {
 
                 return (
                   <div key={category}>
-                    <div className="px-3 py-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                    <div className="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                       {category}
                     </div>
                     {categorySnippets.map((snippet) => (
                       <motion.div
                         key={snippet.id}
-                        className={`group flex items-center gap-3 px-3 py-2 cursor-pointer transition-colors ${
+                        className={`group flex items-center gap-3 px-3 py-2 cursor-pointer transition-all rounded-xl ${
                           selectedSnippet?.id === snippet.id
-                            ? 'bg-indigo-50 border-l-2 border-indigo-400'
-                            : 'hover:bg-slate-50 border-l-2 border-transparent'
+                            ? 'bg-white/80 border border-slate-100 shadow-sm'
+                            : 'hover:bg-white/60 border border-transparent'
                         }`}
                         onClick={() => {
                           setSelectedSnippet(snippet);
@@ -304,7 +304,7 @@ const CodeTerminal: React.FC = () => {
                       >
                         <Code2 className="w-4 h-4 text-slate-400" />
                         <div className="flex-1 min-w-0">
-                          <p className="text-slate-600 text-sm truncate">{snippet.name}</p>
+                          <p className="text-slate-700 text-sm truncate font-medium">{snippet.name}</p>
                         </div>
                       </motion.div>
                     ))}
@@ -379,10 +379,10 @@ const CodeTerminal: React.FC = () => {
       </div>
 
       {/* Main Content - Editor + Preview */}
-      <div className="flex-1 flex flex-col bg-slate-50/50">
-        {/* Toolbar */}
+      <div className="flex-1 flex flex-col bg-transparent">
+        {/* Toolbar - Crown Glass */}
         {selectedSnippet && !isInteractiveMode && (
-          <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200/60 bg-white/60 backdrop-blur-sm">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-white/50 backdrop-blur-3xl">
             <div className="flex items-center gap-3">
               <Terminal className="w-4 h-4 text-indigo-500" />
               <span className="text-slate-700 font-medium text-sm">

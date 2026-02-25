@@ -86,17 +86,14 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
 
   return (
     <motion.div
-      className="fixed rounded-3xl overflow-hidden"
+      // CRITICAL: Crown Glass Effect - EXACT CLASSES
+      className="fixed rounded-3xl overflow-hidden bg-white/50 backdrop-blur-3xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04),0_1px_3px_rgb(0,0,0,0.02)]"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
         left: isMaximized ? 0 : position.x,
         top: isMaximized ? 0 : position.y,
         zIndex,
-        // Premium layered shadow (Stripe-style)
-        boxShadow: isMaximized 
-          ? '0 0 0 1px rgba(226, 232, 240, 0.6), 0 4px 8px rgba(0,0,0,0.02), 0 16px 48px rgba(0,0,0,0.04)'
-          : '0 0 0 1px rgba(226, 232, 240, 0.5), 0 2px 4px rgba(0,0,0,0.02), 0 8px 16px rgba(0,0,0,0.03), 0 20px 40px -15px rgba(0,0,0,0.08)',
       }}
       initial={{ opacity: 0, scale: 0.97, y: 12 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -108,12 +105,9 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
       onDragEnd={handleDragEnd}
       onMouseDown={() => focusWindow(id)}
     >
-      {/* Window Frame with Hairline Border */}
-      <div className="absolute inset-0 rounded-3xl border border-slate-200/80 pointer-events-none" />
-      
       {/* Title Bar - Premium Glass */}
       <div
-        className="relative flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/80 via-white/60 to-transparent backdrop-blur-2xl cursor-move select-none border-b border-slate-200/60"
+        className="flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/60 via-white/40 to-transparent backdrop-blur-xl cursor-move select-none border-b border-white/50"
         onClick={handleTitleBarClick}
         onDoubleClick={handleMaximizeToggle}
       >
@@ -154,9 +148,7 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
       </div>
 
       {/* Window Content */}
-      <div className="h-[calc(100%-48px)] overflow-auto bg-slate-50/30 backdrop-blur-sm">
-        {children}
-      </div>
+      <div className="h-[calc(100%-48px)] overflow-auto">{children}</div>
     </motion.div>
   );
 });
