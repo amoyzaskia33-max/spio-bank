@@ -47,10 +47,10 @@ const Taskbar: React.FC = memo(() => {
       className="absolute bottom-4 left-0 right-0 flex items-center justify-center px-4"
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Light Floating Dock */}
-      <div className="glass-heavy rounded-2xl px-2.5 py-2 shadow-dock">
+      {/* Premium Floating Dock - Stripe-style */}
+      <div className="glass-heavy rounded-2xl px-2.5 py-2.5 shadow-dock">
         <div className="flex items-center gap-1.5">
           {apps.map((app) => {
             const isOpen = windows[app.id]?.isOpen;
@@ -62,24 +62,24 @@ const Taskbar: React.FC = memo(() => {
                 onClick={() => handleAppClick(app.id, app.component)}
                 className={`relative flex items-center justify-center w-12 h-12 rounded-xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-indigo-100/60 border border-indigo-200/50'
-                    : 'hover:bg-slate-100/60 border border-transparent'
+                    ? 'bg-white shadow-sm'
+                    : 'hover:bg-white/60'
                 }`}
-                whileHover={{ scale: 1.08, y: -2 }}
+                whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.96 }}
                 title={app.label}
               >
                 <app.icon
-                  className={`w-6 h-6 ${
-                    isActive ? 'text-indigo-600' : 'text-slate-400'
+                  className={`w-5 h-5 ${
+                    isActive ? 'text-slate-800' : 'text-slate-500'
                   }`}
                   strokeWidth={1.5}
                 />
 
-                {/* Active indicator dot */}
+                {/* Active indicator - subtle dot */}
                 {isOpen && (
                   <motion.div
-                    className="absolute -bottom-1.5 w-1.5 h-1.5 rounded-full bg-indigo-400"
+                    className="absolute -bottom-1.5 w-1 h-1 rounded-full bg-slate-400"
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                   />

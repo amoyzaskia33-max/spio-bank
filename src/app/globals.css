@@ -3,18 +3,16 @@
 @tailwind utilities;
 
 :root {
-  /* Soft Light Pastel Theme - Nordic Morning */
-  --foreground-rgb: 71, 85, 105;
-  --foreground-muted-rgb: 100, 116, 139;
-  --background-start-rgb: 248, 250, 252;
-  --background-end-rgb: 241, 245, 249;
+  /* Premium Light Theme - Stripe/Apple Aesthetic */
+  --foreground-rgb: 15, 23, 42;
+  --foreground-muted-rgb: 71, 85, 105;
+  --background-rgb: 250, 250, 250;
 
-  /* Pastel Accent Colors - Soft & Eye-friendly */
+  /* Premium Accent Colors */
   --accent-primary: 99, 102, 241;     /* Indigo 500 */
-  --accent-mint: 16, 185, 129;        /* Emerald 500 */
-  --accent-red: 251, 113, 133;        /* Rose 400 */
-  --accent-yellow: 251, 191, 36;      /* Amber 400 */
-  --accent-green: 52, 211, 153;       /* Emerald 400 */
+  --accent-success: 16, 185, 129;     /* Emerald 500 */
+  --accent-warning: 245, 158, 11;     /* Amber 500 */
+  --accent-danger: 239, 68, 68;       /* Red 500 */
 }
 
 * {
@@ -28,171 +26,245 @@ body {
   max-width: 100vw;
   max-height: 100vh;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E8F0F6 100%);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+  background: #FAFAFA;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
 }
 
-/* Custom Scrollbar - Light macOS Style */
+/* Custom Scrollbar - Premium Light */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.03);
+  background: rgba(0, 0, 0, 0.02);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.15);
 }
 
-/* Selection */
+/* Selection - Premium Indigo */
 ::selection {
-  background: rgba(99, 102, 241, 0.2);
+  background: rgba(99, 102, 241, 0.15);
   color: rgb(var(--foreground-rgb));
 }
 
-/* Smooth Animations - Performance optimized */
+/* Smooth Animations */
 * {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 120ms;
+  transition-duration: 150ms;
 }
 
 /* ============================================
-   LIGHT GLASS EFFECTS
-   Soft translucency with subtle borders
+   PREMIUM GLASS EFFECTS
+   Stripe/Apple-style subtle translucency
    ============================================ */
 
-/* Light glass - for panels and sidebars */
+/* Light glass - for sidebars and panels */
 .glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(226, 232, 240, 0.6);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 /* Heavy glass - for modals and focused elements */
 .glass-heavy {
   background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(32px);
-  -webkit-backdrop-filter: blur(32px);
-  border: 1px solid rgba(226, 232, 240, 0.7);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.8);
 }
 
-/* Premium glass - for sidebars with extra subtle effect */
+/* Premium glass - enhanced saturation */
 .glass-premium {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(28px) saturate(100%);
-  -webkit-backdrop-filter: blur(28px) saturate(100%);
-  border: 1px solid rgba(226, 232, 240, 0.6);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.75);
 }
 
 /* ============================================
-   SOFT SHADOWS
-   Gentle, diffused shadows for light theme
+   PREMIUM SHADOWS
+   Layered, soft shadows for depth (Stripe-style)
    ============================================ */
 
-/* Window shadow - soft elevation */
+/* Window shadow - floating elevation */
 .shadow-window {
   box-shadow: 
     0 0 0 1px rgba(226, 232, 240, 0.5),
-    0 8px 30px rgba(0, 0, 0, 0.04),
-    0 0 60px rgba(0, 0, 0, 0.02);
+    0 2px 4px rgba(0, 0, 0, 0.02),
+    0 8px 16px rgba(0, 0, 0, 0.03),
+    0 20px 40px -15px rgba(0, 0, 0, 0.08),
+    0 0 80px rgba(0, 0, 0, 0.02);
 }
 
-/* Window shadow large - for maximized/focused windows */
+/* Window shadow large - for focused windows */
 .shadow-window-lg {
   box-shadow: 
     0 0 0 1px rgba(226, 232, 240, 0.6),
-    0 16px 50px rgba(0, 0, 0, 0.06),
-    0 0 80px rgba(0, 0, 0, 0.03);
+    0 4px 8px rgba(0, 0, 0, 0.03),
+    0 16px 48px rgba(0, 0, 0, 0.05),
+    0 30px 60px -20px rgba(0, 0, 0, 0.1),
+    0 0 100px rgba(0, 0, 0, 0.03);
 }
 
-/* Active window glow - soft pastel glow */
+/* Active window glow - subtle indigo tint */
 .shadow-window-active {
   box-shadow: 
     0 0 0 1px rgba(226, 232, 240, 0.7),
-    0 8px 30px rgba(0, 0, 0, 0.05),
-    0 0 50px rgba(99, 102, 241, 0.08);
+    0 2px 4px rgba(0, 0, 0, 0.02),
+    0 8px 16px rgba(0, 0, 0, 0.03),
+    0 20px 40px -15px rgba(0, 0, 0, 0.08),
+    0 0 60px rgba(99, 102, 241, 0.06);
 }
 
-/* Dock shadow */
+/* Dock shadow - floating bar */
 .shadow-dock {
   box-shadow: 
     0 0 0 1px rgba(226, 232, 240, 0.6),
-    0 12px 40px rgba(0, 0, 0, 0.06),
-    0 0 60px rgba(0, 0, 0, 0.04);
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 12px 40px -10px rgba(0, 0, 0, 0.08),
+    0 0 60px rgba(0, 0, 0, 0.03);
 }
 
-/* Soft diffused shadow for cards */
-.shadow-soft-diffused {
+/* Soft shadow for cards */
+.shadow-soft {
   box-shadow: 
     0 0 0 1px rgba(226, 232, 240, 0.5),
-    0 30px 80px rgba(0, 0, 0, 0.05);
+    0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+/* Large soft shadow */
+.shadow-soft-lg {
+  box-shadow: 
+    0 0 0 1px rgba(226, 232, 240, 0.5),
+    0 8px 24px rgba(0, 0, 0, 0.04),
+    0 20px 48px -12px rgba(0, 0, 0, 0.06);
 }
 
 /* ============================================
-   UTILITY CLASSES
+   TYPOGRAPHY UTILITIES
+   Premium hierarchy (Stripe/Vercel style)
    ============================================ */
 
-/* Hairline border utility - light theme */
+/* Tight tracking for headings */
+.tracking-tight-premium {
+  letter-spacing: -0.02em;
+}
+
+/* Display text - large, tight, semibold */
+.text-display {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+/* Heading - medium-large, semibold */
+.text-heading {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* Body - regular weight, relaxed */
+.text-body {
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+
+/* Label - medium weight, slightly tight */
+.text-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   MESH GRADIENT BACKGROUNDS
+   Subtle, premium background effects
+   ============================================ */
+
+.mesh-gradient-1 {
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(250, 250, 250, 1) 0%, transparent 100%);
+}
+
+.mesh-gradient-2 {
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 50%);
+}
+
+/* ============================================
+   BORDER UTILITIES
+   Hairline borders for definition
+   ============================================ */
+
 .border-hairline {
   border-width: 1px;
-  border-color: rgba(226, 232, 240, 0.6);
+  border-color: rgba(226, 232, 240, 0.8);
 }
 
-/* Subtle hover effect - light theme */
-.hover-subtle {
-  transition: background-color 120ms ease;
-}
-.hover-subtle:hover {
-  background-color: rgba(99, 102, 241, 0.05);
-}
-
-/* Text gradient for headings - light theme */
-.text-gradient {
-  background: linear-gradient(135deg, #475569 0%, #64748b 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Pastel accent glow for buttons */
-.accent-glow {
-  box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
-}
-.accent-glow:hover {
-  box-shadow: 0 0 25px rgba(99, 102, 241, 0.3);
+.border-hairline-subtle {
+  border-width: 1px;
+  border-color: rgba(226, 232, 240, 0.5);
 }
 
 /* ============================================
-   PASTEL BACKGROUND SHAPES
-   Decorative blurred shapes for visual interest
+   HOVER STATES
+   Subtle, premium interactions
    ============================================ */
-.pastel-shape-1 {
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
-  filter: blur(80px);
+
+.hover-subtle {
+  transition: background-color 150ms ease, box-shadow 150ms ease;
+}
+.hover-subtle:hover {
+  background-color: rgba(99, 102, 241, 0.04);
 }
 
-.pastel-shape-2 {
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%);
-  filter: blur(80px);
+.hover-elevated {
+  transition: background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+.hover-elevated:hover {
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px);
 }
 
-.pastel-shape-3 {
-  background: radial-gradient(circle, rgba(251, 113, 133, 0.06) 0%, transparent 70%);
-  filter: blur(80px);
+/* ============================================
+   FOCUS STATES
+   Accessible, premium focus rings
+   ============================================ */
+
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.4);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }

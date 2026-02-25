@@ -17,60 +17,79 @@ const BootScreen: React.FC = () => {
     bootLogs.forEach((log, index) => {
       setTimeout(() => {
         setVisibleLogs((prev) => [...prev, log]);
-      }, index * 250);
+      }, index * 200);
     });
   }, []);
 
   return (
-    <div className="fixed inset-0 bg-slate-50 flex items-center justify-center font-mono text-sm">
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 to-teal-50/30" />
+    <div className="fixed inset-0 bg-[#FAFAFA] flex items-center justify-center font-mono text-sm">
+      {/* Subtle mesh gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100" />
+      
+      {/* Decorative blur */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute top-1/4 left-1/4 w-1/2 h-1/2 rounded-full opacity-40"
+          style={{
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%)',
+            filter: 'blur(100px)',
+          }}
+        />
+      </div>
       
       <div className="w-full max-w-md px-8 relative z-10">
-        {/* SPIO Logo - Light Premium Style */}
+        {/* SPIO Logo - Premium Minimal */}
         <motion.div
-          className="text-center mb-10"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
           <motion.div
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-100 to-white border border-slate-200 mb-5 shadow-sm"
-            whileHover={{ scale: 1.05 }}
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white border border-slate-200/80 mb-5 shadow-sm"
+            whileHover={{ scale: 1.02 }}
           >
-            <span className="text-xl font-semibold text-indigo-600">S</span>
+            <span className="text-2xl font-semibold text-slate-800 tracking-tight">S</span>
           </motion.div>
-          <h1 className="text-xl font-medium text-slate-700 tracking-tight">SPIO OS</h1>
-          <p className="text-slate-400 text-[12px] mt-1.5">Auto-Vault System</p>
+          <h1 className="text-xl font-semibold text-slate-800 tracking-tight">SPIO OS</h1>
+          <p className="text-slate-500 text-[12px] mt-1.5 font-medium">Auto-Vault System</p>
         </motion.div>
 
-        {/* Boot Logs - Light Minimal Style */}
-        <div className="space-y-2.5 bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-slate-200/60 shadow-sm">
-          {visibleLogs.map((log, index) => (
-            <motion.div
-              key={index}
-              className="flex items-center gap-2.5 text-slate-500"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <span className="text-emerald-500 text-[10px]">✓</span>
-              <span className="text-slate-500 text-[12px]">{log}</span>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Loading Bar - Light Minimal */}
+        {/* Boot Logs - Premium Card */}
         <motion.div
-          className="mt-10 h-0.5 bg-slate-200 rounded-full overflow-hidden"
+          className="bg-white/80 backdrop-blur-xl rounded-2xl p-5 border border-slate-200/80 shadow-soft-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
+        >
+          <div className="space-y-2.5">
+            {visibleLogs.map((log, index) => (
+              <motion.div
+                key={index}
+                className="flex items-center gap-2.5 text-slate-600"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <span className="text-emerald-500 text-[10px] font-medium">✓</span>
+                <span className="text-slate-600 text-[12px] font-mono">{log}</span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Loading Bar - Premium */}
+        <motion.div
+          className="mt-10 h-1 bg-slate-200 rounded-full overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
         >
           <motion.div
-            className="h-full bg-gradient-to-r from-indigo-400 to-teal-400"
+            className="h-full bg-gradient-to-r from-indigo-500 to-purple-500"
             initial={{ width: '0%' }}
             animate={{ width: '100%' }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            transition={{ duration: 1.2, ease: 'easeInOut', delay: 0.3 }}
           />
         </motion.div>
       </div>

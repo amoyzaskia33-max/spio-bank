@@ -65,32 +65,36 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      {/* Soft Light Pastel Background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 50%, #E8F0F6 100%)',
-        }}
-      />
-
-      {/* Decorative Pastel Blur Shapes */}
+    <div className="relative w-screen h-screen overflow-hidden bg-[#FAFAFA]">
+      {/* Premium Mesh Gradient Background - Ultra Subtle */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100" />
+      
+      {/* Decorative Blur Shapes - Stripe-style depth */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Indigo shape - top left */}
+        {/* Indigo blur - top left */}
         <div
-          className="absolute -top-1/2 -left-1/4 w-full h-full pastel-shape-1 opacity-60"
+          className="absolute -top-1/3 -left-1/4 w-2/3 h-2/3 rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%)',
-            filter: 'blur(100px)',
+            background: 'radial-gradient(circle, rgba(99, 102, 241, 0.06) 0%, transparent 70%)',
+            filter: 'blur(80px)',
           }}
         />
         
-        {/* Teal shape - bottom right */}
+        {/* Purple blur - top right */}
         <div
-          className="absolute -bottom-1/2 -right-1/4 w-full h-full pastel-shape-2 opacity-60"
+          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 rounded-full"
           style={{
-            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)',
-            filter: 'blur(100px)',
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.05) 0%, transparent 70%)',
+            filter: 'blur(80px)',
+          }}
+        />
+        
+        {/* Teal blur - bottom */}
+        <div
+          className="absolute -bottom-1/3 left-1/4 w-1/2 h-1/2 rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(16, 185, 129, 0.04) 0%, transparent 70%)',
+            filter: 'blur(80px)',
           }}
         />
       </div>
