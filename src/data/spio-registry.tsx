@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { vaultComponents } from '@/vault-data';
 
 // ============================================
 // SPIO OS Component Registry
@@ -13,6 +14,8 @@ export interface SpioComponent {
   codeSnippet: string;
   componentType?: React.ComponentType<any>;
   description?: string;
+  isLive?: boolean;
+  tags?: string[];
 }
 
 // ============================================
@@ -497,15 +500,19 @@ export const spioRegistry: SpioComponent[] = [
 
 // Helper functions
 export const getComponentById = (id: string): SpioComponent | undefined => {
-  return spioRegistry.find((comp) => comp.id === id);
+  return [...spioRegistry, ...vaultComponents].find((comp) => comp.id === id);
 };
 
 export const getComponentsByCategory = (category: string): SpioComponent[] => {
-  return spioRegistry.filter((comp) => comp.category === category);
+  return [...spioRegistry, ...vaultComponents].filter((comp) => comp.category === category);
 };
 
 export const getAllCategories = (): string[] => {
   return ['Frontend', 'Backend', 'Prompt'];
 };
 
-export default spioRegistry;
+export const getVaultComponentCount = (): number => {
+  return vaultComponents.length;
+};
+
+export default [...spioRegistry, ...vaultComponents];

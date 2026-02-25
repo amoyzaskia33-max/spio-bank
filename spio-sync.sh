@@ -1,6 +1,12 @@
 #!/bin/bash
 # SPIO LOCAL SYNC (The Half-Bridge)
 
+echo "🔍 [SPIO-QC] Scanning vault-data folder..."
+
+# Scan vault-data dan generate index.ts
+npm run scan-vault
+
+echo ""
 echo "🔍 [SPIO-QC] Mengecek kesehatan kode..."
 
 # Cek apakah Next.js bisa di-build tanpa error
