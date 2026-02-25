@@ -105,8 +105,8 @@ const SpioExplorer: React.FC = memo(() => {
 
   return (
     <div className="flex h-full">
-      {/* Sidebar - Crown Glass */}
-      <div className="w-64 border-r border-white/60 bg-white/50 backdrop-blur-3xl overflow-y-auto">
+      {/* Sidebar */}
+      <div className="w-64 border-r border-white/60 bg-white/20 backdrop-blur-[40px] saturate-[1.2] overflow-y-auto">
         <div className="p-6 border-b border-white/60">
           <h2 className="text-slate-800 font-semibold text-[13px] tracking-tight flex items-center gap-2">
             <Folder className="w-4 h-4 text-slate-400" strokeWidth={1.5} />
@@ -124,7 +124,7 @@ const SpioExplorer: React.FC = memo(() => {
             {categories.map((category) => (
               <div key={category.name}>
                 <motion.div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl hover:bg-white/60 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl hover:bg-white/40 transition-colors"
                   onClick={() => toggleCategory(category.name)}
                   whileHover={{ x: 2 }}
                 >
@@ -148,7 +148,7 @@ const SpioExplorer: React.FC = memo(() => {
                     {category.components.map((component) => (
                       <motion.div
                         key={component.id}
-                        className="flex items-center gap-2 px-3 py-2 ml-4 cursor-pointer rounded-xl hover:bg-white/60 transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 ml-4 cursor-pointer rounded-xl hover:bg-white/40 transition-colors"
                         onClick={() => handleComponentSelect(component)}
                         whileHover={{ x: 2 }}
                       >
@@ -168,7 +168,7 @@ const SpioExplorer: React.FC = memo(() => {
           <button
             onClick={loadVaultComponents}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/80 hover:bg-white rounded-xl border border-slate-100 text-slate-600 text-[12px] font-medium transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/60 rounded-xl border border-white/60 text-slate-600 text-[12px] font-medium transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             {isLoading ? 'Scanning...' : 'Refresh Vault'}
@@ -176,14 +176,14 @@ const SpioExplorer: React.FC = memo(() => {
         </div>
       </div>
 
-      {/* Main Content - Premium Spacing */}
+      {/* Main Content */}
       <div className="flex-1 bg-transparent p-8 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-10">
             <h1 className="text-3xl font-semibold text-slate-800 tracking-tight mb-3">SPIO OS Vault</h1>
             <p className="text-slate-500 text-[14px] font-medium">
-              Auto-discovered components from <code className="px-2 py-0.5 bg-white/80 rounded-lg border border-slate-100 text-slate-600">src/vault-data/</code>
+              Auto-discovered components from <code className="px-2 py-0.5 bg-white/50 rounded-lg border border-white/60 text-slate-600">src/vault-data/</code>
             </p>
           </div>
 
@@ -202,7 +202,7 @@ const SpioExplorer: React.FC = memo(() => {
                 {categories.map((category) => (
                   <div
                     key={category.name}
-                    className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300"
+                    className="bg-white/40 backdrop-blur-[40px] saturate-[1.2] rounded-2xl p-6 border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)]"
                   >
                     <div className="flex items-center gap-3 mb-3">
                       {getFileIcon(category.name)}
@@ -226,11 +226,10 @@ const SpioExplorer: React.FC = memo(() => {
                       {category.components.map((component) => (
                         <motion.div
                           key={component.id}
-                          // CRITICAL: INNER ELEMENT CLASSES - EXACT SPEC
-                          className="bg-white/80 border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 rounded-2xl p-6 cursor-pointer"
+                          className="bg-white/50 backdrop-blur-[40px] saturate-[1.2] border border-white/60 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] hover:shadow-[0_12px_40px_0_rgba(31,38,135,0.1)] hover:-translate-y-1 transition-all duration-300 rounded-2xl p-6 cursor-pointer"
                           onClick={() => handleComponentSelect(component)}
-                          whileHover={{ scale: 1.01 }}
-                          whileTap={{ scale: 0.99 }}
+                          whileHover={{ scale: 1.02 }}
+                          whileTap={{ scale: 0.98 }}
                         >
                           <div className="flex items-start justify-between mb-3">
                             <h4 className="text-slate-800 font-semibold text-[15px] tracking-tight">{component.title}</h4>

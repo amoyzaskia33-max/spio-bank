@@ -86,8 +86,7 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
 
   return (
     <motion.div
-      // CRITICAL: Crown Glass Effect - EXACT CLASSES
-      className="fixed rounded-3xl overflow-hidden bg-white/50 backdrop-blur-3xl border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04),0_1px_3px_rgb(0,0,0,0.02)]"
+      className="absolute overflow-hidden bg-white/30 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
@@ -105,13 +104,13 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
       onDragEnd={handleDragEnd}
       onMouseDown={() => focusWindow(id)}
     >
-      {/* Title Bar - Premium Glass */}
+      {/* Title Bar */}
       <div
-        className="flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/60 via-white/40 to-transparent backdrop-blur-xl cursor-move select-none border-b border-white/50"
+        className="flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/40 via-white/20 to-transparent backdrop-blur-xl cursor-move select-none border-b border-white/60"
         onClick={handleTitleBarClick}
         onDoubleClick={handleMaximizeToggle}
       >
-        {/* macOS Window Controls - Premium Pastel */}
+        {/* macOS Window Controls */}
         <div className="flex items-center gap-2">
           <button
             onClick={handleClose}
@@ -138,7 +137,7 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
           </button>
         </div>
 
-        {/* Window Title - Premium Typography */}
+        {/* Window Title */}
         <div className="flex-1 text-center">
           <span className="text-slate-500 text-[11px] font-medium tracking-wide uppercase">{title}</span>
         </div>

@@ -49,8 +49,8 @@ const Taskbar: React.FC = memo(() => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* Premium Floating Dock - Crown Glass */}
-      <div className="bg-white/50 backdrop-blur-3xl rounded-3xl px-3 py-3 border border-white/60 shadow-[0_8px_30px_rgb(0,0,0,0.04),0_1px_3px_rgb(0,0,0,0.02)]">
+      {/* Floating Dock */}
+      <div className="overflow-hidden bg-white/30 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl px-3 py-3">
         <div className="flex items-center gap-2">
           {apps.map((app) => {
             const isOpen = windows[app.id]?.isOpen;
@@ -62,8 +62,8 @@ const Taskbar: React.FC = memo(() => {
                 onClick={() => handleAppClick(app.id, app.component)}
                 className={`relative flex items-center justify-center w-14 h-14 rounded-2xl transition-all duration-200 ${
                   isActive
-                    ? 'bg-white/80 shadow-sm'
-                    : 'hover:bg-white/60'
+                    ? 'bg-white/50'
+                    : 'hover:bg-white/40'
                 }`}
                 whileHover={{ scale: 1.06, y: -2 }}
                 whileTap={{ scale: 0.96 }}

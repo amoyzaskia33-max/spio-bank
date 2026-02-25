@@ -65,27 +65,10 @@ const Desktop: React.FC = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#F8F9FA]">
-      {/* MESH GRADIENT BACKGROUNDS - Decorative Light Patches */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Blue light patch - top left */}
-        <div
-          className="absolute -top-1/3 -left-1/4 w-[800px] h-[800px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(96, 165, 250, 0.15) 0%, transparent 70%)',
-            filter: 'blur(120px)',
-          }}
-        />
-        
-        {/* Purple light patch - bottom right */}
-        <div
-          className="absolute -bottom-1/3 -right-1/4 w-[800px] h-[800px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%)',
-            filter: 'blur(120px)',
-          }}
-        />
-      </div>
+    <div className="relative h-screen w-screen bg-[#f3f4f6] overflow-hidden">
+      {/* Decorative Blur Shapes */}
+      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full bg-purple-300/40 blur-[100px] mix-blend-multiply" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-blue-300/40 blur-[120px] mix-blend-multiply" />
 
       {/* Windows */}
       <AnimatePresence>
