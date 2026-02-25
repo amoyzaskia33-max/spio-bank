@@ -23,16 +23,15 @@ test.describe('SPIO OS - Window Manager', () => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Get window count before close
-    const windowsBefore = await page.locator('[class*="rounded-3xl"]').count();
-    
+    // Window should be visible
+    await expect(page.getByText('SPIO Explorer').first()).toBeVisible();
+
     // Click close button
     await page.getByRole('button', { name: 'Close' }).first().click();
     await page.waitForTimeout(500);
 
-    // Window count should decrease
-    const windowsAfter = await page.locator('[class*="rounded-3xl"]').count();
-    expect(windowsAfter).toBeLessThan(windowsBefore);
+    // Window should be hidden
+    await expect(page.getByText('SPIO Explorer').first()).not.toBeVisible();
   });
 
   test('should minimize window when clicking minimize button', async ({ page }) => {

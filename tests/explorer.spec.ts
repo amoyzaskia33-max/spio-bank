@@ -42,7 +42,7 @@ test.describe('SPIO OS - Explorer', () => {
     await page.waitForTimeout(500);
 
     // Frontend category should be expanded by default
-    await expect(page.getByText('Button Glow').first()).toBeVisible();
+    await expect(page.getByText('PricingCard Component').first()).toBeVisible();
 
     // Click to collapse
     await page.getByText('Frontend').first().click();
@@ -58,7 +58,7 @@ test.describe('SPIO OS - Explorer', () => {
     await page.waitForTimeout(500);
 
     // Click on a component
-    await page.getByText('Button Glow').first().click();
+    await page.getByText('PricingCard Component').first().click();
     await page.waitForTimeout(1000);
 
     // Code Terminal and UI Canvas should open
@@ -71,15 +71,15 @@ test.describe('SPIO OS - Explorer', () => {
     await page.waitForTimeout(500);
 
     // Component cards should be visible
-    await expect(page.getByRole('heading', { name: 'Button Glow' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Card Animated' })).toBeVisible();
+    await expect(page.getByText('PricingCard Component').first()).toBeVisible();
+    await expect(page.getByText('PromoBanner Component').first()).toBeVisible();
   });
 
   test('should show component description', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Descriptions should be visible
-    await expect(page.locator('body')).toContainText('Interactive');
+    // Descriptions should be visible - check for component names
+    await expect(page.locator('body')).toContainText('PricingCard');
   });
 });

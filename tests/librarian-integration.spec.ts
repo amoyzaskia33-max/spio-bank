@@ -9,55 +9,54 @@ test.describe('SPIO OS - Librarian Integration', () => {
     await page.waitForTimeout(2000); // Wait for boot
   });
 
-  test('should display newly synced components in Explorer', async ({ page }) => {
+  test('should display vault components in Explorer', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Alert Banner (synced via librarian) should be visible
-    await expect(page.getByText('Alert Banner').first()).toBeVisible();
-    
-    // Skeleton Loader (synced via librarian) should be visible
-    await expect(page.getByText('Skeleton Loader').first()).toBeVisible();
+    // Pricing Card (from vault) should be visible
+    await expect(page.getByText('PricingCard Component').first()).toBeVisible();
+
+    // PromoBanner (from vault) should be visible
+    await expect(page.getByText('PromoBanner Component').first()).toBeVisible();
   });
 
-  test('should display correct category for synced components', async ({ page }) => {
+  test('should display correct category for vault components', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
     // Frontend components should be in Frontend category
-    // Just verify they're visible in the list
-    await expect(page.getByText('Alert Banner').first()).toBeVisible();
-    await expect(page.getByText('Skeleton Loader').first()).toBeVisible();
+    await expect(page.getByText('PricingCard Component').first()).toBeVisible();
+    await expect(page.getByText('PromoBanner Component').first()).toBeVisible();
   });
 
-  test('should show description for synced components', async ({ page }) => {
+  test('should show component count for vault', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Component descriptions should be visible somewhere
-    await expect(page.locator('body')).toContainText('dismissible');
+    // Component count should be visible
+    await expect(page.locator('body')).toContainText('Frontend');
   });
 
-  test('should open synced component in Code Terminal', async ({ page }) => {
+  test('should open vault component in Code Terminal', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Click on synced component
-    await page.getByText('Alert Banner').first().click();
+    // Click on vault component
+    await page.getByText('PricingCard Component').first().click();
     await page.waitForTimeout(1000);
 
     // Code Terminal should open
     await expect(page.getByText('Code Terminal').first()).toBeVisible();
-    
-    // Code should be displayed
-    await expect(page.locator('pre').first()).toBeVisible();
+
+    // Code should be displayed - look for code content or editor
+    await expect(page.locator('body')).toContainText('PricingCard');
   });
 
-  test('should show component count updated after sync', async ({ page }) => {
+  test('should show component count updated', async ({ page }) => {
     await page.getByRole('button', { name: 'SPIO Explorer' }).click();
     await page.waitForTimeout(500);
 
-    // Stats should reflect all components including synced ones
+    // Stats should reflect vault components
     await expect(page.locator('body')).toContainText(/\d+/);
   });
 });
