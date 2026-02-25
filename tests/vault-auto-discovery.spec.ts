@@ -11,37 +11,6 @@ test.describe('SPIO OS - Vault Auto-Discovery', () => {
   });
 
   test('should load vault components via API', async ({ page }) => {
-    // Open SPIO Explorer
-    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
-    await page.waitForTimeout(1500);
-
-    // Should show vault stats
-    await expect(page.getByText('Frontend')).toBeVisible();
-  });
-
-  test('should display Pricing Card from vault', async ({ page }) => {
-    // Open SPIO Explorer
-    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
-    await page.waitForTimeout(1500);
-
-    // Pricing Card should be visible
-    await expect(page.getByText('Pricing Card').first()).toBeVisible();
-  });
-
-  test('should open Pricing Card in Code Terminal', async ({ page }) => {
-    // Open SPIO Explorer
-    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
-    await page.waitForTimeout(1500);
-
-    // Click on Pricing Card
-    await page.getByText('Pricing Card').first().click();
-    await page.waitForTimeout(1000);
-
-    // Code Terminal should open
-    await expect(page.getByText('Code Terminal').first()).toBeVisible();
-  });
-
-  test('should show vault API response', async ({ page }) => {
     // Direct API test
     const response = await page.request.get('/api/vault');
     expect(response.ok()).toBe(true);
@@ -50,5 +19,39 @@ test.describe('SPIO OS - Vault Auto-Discovery', () => {
     expect(data.success).toBe(true);
     expect(Array.isArray(data.data)).toBe(true);
     expect(data.stats).toBeDefined();
+  });
+
+  test('should open SPIO Explorer and display vault components', async ({ page }) => {
+    // Open SPIO Explorer
+    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
+    await page.waitForTimeout(1500);
+
+    // Should show vault stats
+    await expect(page.getByText('Frontend', { exact: true }).first()).toBeVisible();
+  });
+
+  test('should display PricingCard from vault', async ({ page }) => {
+    // Open SPIO Explorer
+    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
+    await page.waitForTimeout(1500);
+
+    // PricingCard should be visible
+    await expect(page.getByText('PricingCard').first()).toBeVisible();
+  });
+
+  test('should open PricingCard in Code Terminal', async ({ page }) => {
+    // Open SPIO Explorer
+    await page.getByRole('button', { name: 'SPIO Explorer' }).click();
+    await page.waitForTimeout(1500);
+
+    // Click on PricingCard
+    await page.getByText('PricingCard').first().click();
+    await page.waitForTimeout(2000);
+
+    // Code Terminal should open
+    await expect(page.getByText('Code Terminal').first()).toBeVisible();
+    
+    // Verify Code Library sidebar is visible
+    await expect(page.getByText('Code Library').first()).toBeVisible();
   });
 });
