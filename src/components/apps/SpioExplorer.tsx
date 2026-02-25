@@ -105,17 +105,17 @@ const SpioExplorer: React.FC = memo(() => {
 
   return (
     <div className="flex h-full">
-      {/* Sidebar */}
-      <div className="w-64 border-r border-white/60 bg-white/20 backdrop-blur-[40px] saturate-[1.2] overflow-y-auto">
+      {/* Sidebar - Enhanced Visibility */}
+      <div className="w-64 border-r border-white/60 bg-white/60 backdrop-blur-3xl saturate-[1.2] overflow-y-auto relative z-20">
         <div className="p-6 border-b border-white/60">
           <h2 className="text-slate-800 font-semibold text-[13px] tracking-tight flex items-center gap-2">
-            <Folder className="w-4 h-4 text-slate-400" strokeWidth={1.5} />
+            <Folder className="w-4 h-4 text-slate-600" strokeWidth={1.5} />
             SPIO Explorer
           </h2>
         </div>
 
         {isLoading && components.length === 0 ? (
-          <div className="p-6 flex items-center justify-center text-slate-400 text-[12px]">
+          <div className="p-6 flex items-center justify-center text-slate-600 text-[12px]">
             <Loader2 className="w-4 h-4 animate-spin mr-2" />
             Scanning vault...
           </div>
@@ -124,18 +124,18 @@ const SpioExplorer: React.FC = memo(() => {
             {categories.map((category) => (
               <div key={category.name}>
                 <motion.div
-                  className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl hover:bg-white/40 transition-colors"
+                  className="flex items-center gap-2 px-3 py-2 cursor-pointer rounded-xl hover:bg-white/60 transition-colors"
                   onClick={() => toggleCategory(category.name)}
                   whileHover={{ x: 2 }}
                 >
                   {expandedCategories[category.name] ? (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                    <ChevronDown className="w-4 h-4 text-slate-600" />
                   ) : (
-                    <ChevronRight className="w-4 h-4 text-slate-400" />
+                    <ChevronRight className="w-4 h-4 text-slate-600" />
                   )}
-                  <FolderOpen className="w-4 h-4 text-slate-400" />
-                  <span className="text-slate-700 text-[13px] font-medium">{category.name}</span>
-                  <span className="ml-auto text-slate-400 text-[11px] font-medium">{category.components.length}</span>
+                  <FolderOpen className="w-4 h-4 text-slate-600" />
+                  <span className="text-slate-800 text-[13px] font-medium">{category.name}</span>
+                  <span className="ml-auto text-slate-600 text-[11px] font-medium">{category.components.length}</span>
                 </motion.div>
 
                 {expandedCategories[category.name] && (
@@ -148,12 +148,12 @@ const SpioExplorer: React.FC = memo(() => {
                     {category.components.map((component) => (
                       <motion.div
                         key={component.id}
-                        className="flex items-center gap-2 px-3 py-2 ml-4 cursor-pointer rounded-xl hover:bg-white/40 transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 ml-4 cursor-pointer rounded-xl hover:bg-indigo-100/60 transition-colors"
                         onClick={() => handleComponentSelect(component)}
                         whileHover={{ x: 2 }}
                       >
                         {getFileIcon(category.name)}
-                        <span className="text-slate-600 text-[13px] truncate">{component.title}</span>
+                        <span className="text-slate-800 text-[13px] truncate font-medium">{component.title}</span>
                       </motion.div>
                     ))}
                   </motion.div>
@@ -168,7 +168,7 @@ const SpioExplorer: React.FC = memo(() => {
           <button
             onClick={loadVaultComponents}
             disabled={isLoading}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/50 hover:bg-white/60 rounded-xl border border-white/60 text-slate-600 text-[12px] font-medium transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white/70 hover:bg-white rounded-xl border border-slate-200 text-slate-700 text-[12px] font-medium transition-all disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             {isLoading ? 'Scanning...' : 'Refresh Vault'}

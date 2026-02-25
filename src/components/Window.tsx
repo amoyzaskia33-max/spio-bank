@@ -86,13 +86,13 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
 
   return (
     <motion.div
-      className="absolute overflow-hidden bg-white/30 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl"
+      className="absolute overflow-hidden bg-white/50 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl z-50"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
         left: isMaximized ? 0 : position.x,
         top: isMaximized ? 0 : position.y,
-        zIndex,
+        zIndex: zIndex + 50, // Ensure windows are above background blobs
       }}
       initial={{ opacity: 0, scale: 0.97, y: 12 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}

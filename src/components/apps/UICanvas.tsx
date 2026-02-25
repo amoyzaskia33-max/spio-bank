@@ -134,11 +134,11 @@ const UICanvas: React.FC = () => {
 
   return (
     <div className="flex h-full font-inter antialiased">
-      {/* Components Sidebar - Crown Glass */}
-      <div className="w-64 border-r border-white/60 bg-white/30 backdrop-blur-3xl saturate-[1.2] flex flex-col">
+      {/* Components Sidebar - Enhanced Visibility */}
+      <div className="w-64 border-r border-white/60 bg-white/70 backdrop-blur-3xl saturate-[1.2] flex flex-col relative z-20">
         <div className="p-4 border-b border-white/60">
           <h2 className="text-slate-800 font-semibold text-sm tracking-tight flex items-center gap-2">
-            <LayoutTemplate className="w-4 h-4 text-indigo-500" />
+            <LayoutTemplate className="w-4 h-4 text-indigo-600" />
             UI Components
           </h2>
         </div>
@@ -260,7 +260,7 @@ const UICanvas: React.FC = () => {
         {/* Preview/Code Area */}
         <div className="flex-1 overflow-auto bg-slate-100/50 p-6">
           {!selectedComponent ? (
-            <div className="h-full flex items-center justify-center text-slate-400">
+            <div className="h-full flex items-center justify-center text-slate-500">
               <div className="text-center">
                 <LayoutTemplate className="w-16 h-16 mx-auto mb-4 opacity-40" />
                 <p className="text-slate-600 font-medium text-sm">Select a component to preview</p>

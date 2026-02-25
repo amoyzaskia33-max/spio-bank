@@ -248,8 +248,8 @@ const CodeTerminal: React.FC = () => {
 
   return (
     <div className="flex h-full font-inter antialiased">
-      {/* Sidebar - Crown Glass */}
-      <div className={`border-r border-white/60 bg-white/30 backdrop-blur-3xl saturate-[1.2] flex flex-col transition-all duration-300 ${
+      {/* Sidebar - Enhanced Visibility */}
+      <div className={`border-r border-white/60 bg-white/70 backdrop-blur-3xl saturate-[1.2] flex flex-col transition-all duration-300 relative z-20 ${
         isInteractiveMode ? 'w-48' : 'w-64'
       }`}>
         <div className="p-4 border-b border-white/60 flex items-center justify-between">
@@ -378,8 +378,8 @@ const CodeTerminal: React.FC = () => {
         )}
       </div>
 
-      {/* Main Content - Editor + Preview */}
-      <div className="flex-1 flex flex-col bg-transparent">
+      {/* Main Content - Editor + Preview - Enhanced Visibility */}
+      <div className="flex-1 flex flex-col bg-slate-50/80 backdrop-blur-sm">
         {/* Toolbar - Crown Glass */}
         {selectedSnippet && !isInteractiveMode && (
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-white/50 backdrop-blur-3xl">
