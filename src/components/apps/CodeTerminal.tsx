@@ -247,9 +247,9 @@ const CodeTerminal: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full font-inter antialiased">
       {/* Sidebar - Crown Glass */}
-      <div className={`border-r border-white/60 bg-white/50 backdrop-blur-3xl flex flex-col transition-all duration-300 ${
+      <div className={`border-r border-white/60 bg-white/30 backdrop-blur-3xl saturate-[1.2] flex flex-col transition-all duration-300 ${
         isInteractiveMode ? 'w-48' : 'w-64'
       }`}>
         <div className="p-4 border-b border-white/60 flex items-center justify-between">
@@ -263,7 +263,7 @@ const CodeTerminal: React.FC = () => {
             className={`p-1.5 rounded-lg transition-colors ${
               isInteractiveMode
                 ? 'bg-indigo-100 text-indigo-600'
-                : 'hover:bg-white/60 text-slate-400'
+                : 'hover:bg-white/50 text-slate-400'
             }`}
             title="Toggle Interactive Mode"
           >
@@ -293,8 +293,8 @@ const CodeTerminal: React.FC = () => {
                         key={snippet.id}
                         className={`group flex items-center gap-3 px-3 py-2 cursor-pointer transition-all rounded-xl ${
                           selectedSnippet?.id === snippet.id
-                            ? 'bg-white/80 border border-slate-100 shadow-sm'
-                            : 'hover:bg-white/60 border border-transparent'
+                            ? 'bg-white/60 border border-slate-100 shadow-sm'
+                            : 'hover:bg-white/40 border border-transparent'
                         }`}
                         onClick={() => {
                           setSelectedSnippet(snippet);
@@ -440,35 +440,37 @@ const CodeTerminal: React.FC = () => {
           </div>
         )}
 
-        {/* Monaco Editor */}
+        {/* Monaco Editor - Dark theme in light window */}
         {selectedSnippet && !isInteractiveMode && (
-          <div className="flex-1 overflow-hidden">
-            <Editor
-              height="100%"
-              language={selectedSnippet.language}
-              theme="vs-dark"
-              value={draftCode || selectedSnippet.code}
-              onChange={handleEditorChange}
-              options={{
-                minimap: { enabled: false },
-                fontSize: 14,
-                lineNumbers: 'on',
-                scrollBeyondLastLine: false,
-                automaticLayout: true,
-                wordWrap: 'on',
-                tabSize: 2,
-              }}
-            />
+          <div className="flex-1 overflow-hidden p-4">
+            <div className="h-full bg-slate-900 rounded-xl p-4 shadow-lg border border-slate-200">
+              <Editor
+                height="100%"
+                language={selectedSnippet.language}
+                theme="vs-dark"
+                value={draftCode || selectedSnippet.code}
+                onChange={handleEditorChange}
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  lineNumbers: 'on',
+                  scrollBeyondLastLine: false,
+                  automaticLayout: true,
+                  wordWrap: 'on',
+                  tabSize: 2,
+                }}
+              />
+            </div>
           </div>
         )}
 
         {/* Empty State */}
         {!selectedSnippet && !isInteractiveMode && (
-          <div className="flex-1 flex items-center justify-center text-white/30">
+          <div className="flex-1 flex items-center justify-center text-slate-400">
             <div className="text-center">
               <Code2 className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">Select a component or use Interactive Mode</p>
-              <p className="text-xs mt-1">Click the sparkles icon to start</p>
+              <p className="text-slate-600 text-sm font-medium">Select a component or use Interactive Mode</p>
+              <p className="text-slate-400 text-xs mt-1">Click the sparkles icon to start</p>
             </div>
           </div>
         )}

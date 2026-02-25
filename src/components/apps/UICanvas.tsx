@@ -70,7 +70,6 @@ const UICanvas: React.FC = () => {
           name: component.title,
           description: component.description || '',
           category: component.category,
-          component: component.componentType,
           code: component.codeSnippet,
         });
         setViewMode('preview');
@@ -81,20 +80,33 @@ const UICanvas: React.FC = () => {
   }, [activeComponentId, setPreviewError]);
 
   // Validate code syntax (basic check)
-  useEffect(() => {
-    if (draftCode && livePreviewEnabled) {
-      try {
-        // Basic syntax validation
-        if (draftCode.includes('import') || draftCode.includes('export')) {
-          setHasError(false);
-          setPreviewError(null);
-        }
-      } catch (err) {
-        setHasError(true);
-        setPreviewError(err instanceof Error ? err.message : 'Syntax error');
+  const validateCode = (code: string) => {
+    if (!code) return false;
+    // Basic validation - check for return statement
+    return code.includes('return') || code.includes('<div') || code.includes('<motion');
+  };
+
+  // Transform code for react-live
+  const transformCodeForPreview = (code: string) => {
+    try {
+      // Remove imports for react-live (it provides React globally)
+      let transformed = code
+        .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
+        .replace(/export\s+(default\s+)?(function|const|class)\s+/g, '$2 ')
+        .trim();
+
+      // Wrap in function component if needed
+      if (!transformed.includes('return')) {
+        return `function Preview() { return null; }`;
       }
+
+      return transformed;
+    } catch (err) {
+      setHasError(true);
+      setPreviewError(err instanceof Error ? err.message : 'Transform error');
+      return `function Preview() { return null; }`;
     }
-  }, [draftCode, livePreviewEnabled, setPreviewError]);
+  };
 
   const getDeviceWidth = () => {
     switch (deviceSize) {
@@ -110,42 +122,20 @@ const UICanvas: React.FC = () => {
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'Frontend':
-        return 'text-blue-400 bg-blue-500/20';
+        return 'text-indigo-600 bg-indigo-100';
       case 'Backend':
-        return 'text-yellow-400 bg-yellow-500/20';
+        return 'text-amber-600 bg-amber-100';
       case 'Prompt':
-        return 'text-purple-400 bg-purple-500/20';
+        return 'text-purple-600 bg-purple-100';
       default:
-        return 'text-white/60 bg-white/5';
-    }
-  };
-
-  // Transform code for react-live
-  const transformCodeForPreview = (code: string) => {
-    try {
-      // Remove imports for react-live (it provides React globally)
-      let transformed = code
-        .replace(/import\s+.*?from\s+['"].*?['"];?/g, '')
-        .replace(/export\s+(default\s+)?(function|const|class)\s+/g, '$2 ')
-        .trim();
-      
-      // Wrap in function component if needed
-      if (!transformed.includes('return')) {
-        return `function Preview() { return null; }`;
-      }
-      
-      return transformed;
-    } catch (err) {
-      setHasError(true);
-      setPreviewError(err instanceof Error ? err.message : 'Transform error');
-      return `function Preview() { return null; }`;
+        return 'text-slate-500 bg-slate-100';
     }
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full font-inter antialiased">
       {/* Components Sidebar - Crown Glass */}
-      <div className="w-64 border-r border-white/60 bg-white/50 backdrop-blur-3xl flex flex-col">
+      <div className="w-64 border-r border-white/60 bg-white/30 backdrop-blur-3xl saturate-[1.2] flex flex-col">
         <div className="p-4 border-b border-white/60">
           <h2 className="text-slate-800 font-semibold text-sm tracking-tight flex items-center gap-2">
             <LayoutTemplate className="w-4 h-4 text-indigo-500" />
@@ -165,8 +155,8 @@ const UICanvas: React.FC = () => {
                 key={preview.id}
                 className={`px-3 py-3 cursor-pointer transition-all rounded-xl ${
                   selectedComponent?.id === preview.id
-                    ? 'bg-white/80 border border-slate-100 shadow-sm'
-                    : 'hover:bg-white/60 border border-transparent'
+                    ? 'bg-white/60 border border-slate-100 shadow-sm'
+                    : 'hover:bg-white/40 border border-transparent'
                 }`}
                 onClick={() => {
                   setSelectedComponent(preview);
@@ -198,7 +188,7 @@ const UICanvas: React.FC = () => {
       {/* Main Canvas - Crown Glass */}
       <div className="flex-1 flex flex-col bg-transparent">
         {/* Toolbar - Crown Glass */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-white/50 backdrop-blur-3xl">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/60 bg-white/50 backdrop-blur-3xl saturate-[1.2]">
           <div className="flex items-center gap-2">
             {selectedComponent && (
               <>
@@ -206,7 +196,7 @@ const UICanvas: React.FC = () => {
                   onClick={() => setViewMode('preview')}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${
                     viewMode === 'preview'
-                      ? 'bg-indigo-100 text-indigo-700'
+                      ? 'bg-indigo-100 text-indigo-700 font-medium'
                       : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
@@ -217,7 +207,7 @@ const UICanvas: React.FC = () => {
                   onClick={() => setViewMode('code')}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-lg transition-colors ${
                     viewMode === 'code'
-                      ? 'bg-indigo-100 text-indigo-700'
+                      ? 'bg-indigo-100 text-indigo-700 font-medium'
                       : 'text-slate-500 hover:text-slate-700'
                   }`}
                 >
@@ -228,13 +218,13 @@ const UICanvas: React.FC = () => {
             )}
           </div>
 
-          {selectedComponent && selectedComponent.component && (
+          {selectedComponent && selectedComponent.code && (
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setDeviceSize('full')}
                 className={`p-2 rounded-lg transition-colors ${
                   deviceSize === 'full'
-                    ? 'bg-indigo-100 text-indigo-700'
+                    ? 'bg-white/60 text-slate-700'
                     : 'text-slate-400 hover:text-slate-600'
                 }`}
                 title="Full Width"
@@ -245,10 +235,10 @@ const UICanvas: React.FC = () => {
                 onClick={() => setDeviceSize('tablet')}
                 className={`p-2 rounded-lg transition-colors ${
                   deviceSize === 'tablet'
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/40 hover:text-white/80'
+                    ? 'bg-white/60 text-slate-700'
+                    : 'text-slate-400 hover:text-slate-600'
                 }`}
-                title="Tablet View"
+                title="Tablet"
               >
                 <Tablet className="w-4 h-4" />
               </button>
@@ -256,10 +246,10 @@ const UICanvas: React.FC = () => {
                 onClick={() => setDeviceSize('mobile')}
                 className={`p-2 rounded-lg transition-colors ${
                   deviceSize === 'mobile'
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/40 hover:text-white/80'
+                    ? 'bg-white/60 text-slate-700'
+                    : 'text-slate-400 hover:text-slate-600'
                 }`}
-                title="Mobile View"
+                title="Mobile"
               >
                 <Smartphone className="w-4 h-4" />
               </button>
@@ -267,101 +257,72 @@ const UICanvas: React.FC = () => {
           )}
         </div>
 
-        {/* Canvas Content */}
-        <div className="flex-1 overflow-auto p-6 flex items-center justify-center">
-          {selectedComponent ? (
-            <motion.div
-              key={selectedComponent.id + viewMode}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className={`${getDeviceWidth()} w-full`}
-            >
-              {/* Component Info Bar */}
-              <div className="mb-4 flex items-center gap-3">
-                <h3 className="text-white font-semibold">{selectedComponent.name}</h3>
-                <span className={`text-xs px-2 py-0.5 rounded ${getCategoryColor(selectedComponent.category)}`}>
-                  {selectedComponent.category}
-                </span>
-                {livePreviewEnabled && (
-                  <span className="flex items-center gap-1 text-xs text-green-400">
-                    <CheckCircle className="w-3 h-3" />
-                    Live Sync Active
-                  </span>
-                )}
+        {/* Preview/Code Area */}
+        <div className="flex-1 overflow-auto bg-slate-100/50 p-6">
+          {!selectedComponent ? (
+            <div className="h-full flex items-center justify-center text-slate-400">
+              <div className="text-center">
+                <LayoutTemplate className="w-16 h-16 mx-auto mb-4 opacity-40" />
+                <p className="text-slate-600 font-medium text-sm">Select a component to preview</p>
+                <p className="text-slate-400 text-xs mt-1">Choose from the sidebar</p>
               </div>
-
-              {viewMode === 'preview' ? (
-                <div className="bg-black/30 rounded-xl border border-white/10 p-8 min-h-[300px] flex items-center justify-center relative">
-                  {/* Error Overlay */}
-                  {hasError && previewError && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="absolute top-0 left-0 right-0 bg-red-500/20 border border-red-500/50 rounded-lg p-3 mb-4"
-                    >
-                      <div className="flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                        <div className="flex-1">
-                          <p className="text-red-400 font-semibold text-sm">Compilation Error</p>
-                          <p className="text-red-300/80 text-xs mt-1">{previewError}</p>
-                        </div>
-                      </div>
-                    </motion.div>
+            </div>
+          ) : viewMode === 'preview' ? (
+            <div className={`mx-auto transition-all duration-300 ${getDeviceWidth()}`}>
+              {/* Preview Area - Light background */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                {/* Info Bar */}
+                <div className="px-4 py-3 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Cpu className="w-4 h-4 text-slate-400" />
+                    <span className="text-slate-600 text-xs font-medium">{selectedComponent.name}</span>
+                  </div>
+                  {selectedComponent.category && (
+                    <span className={`text-[10px] px-2 py-1 rounded-lg font-medium ${getCategoryColor(selectedComponent.category)}`}>
+                      {selectedComponent.category}
+                    </span>
                   )}
+                </div>
 
-                  {/* Live Preview with react-live */}
-                  {livePreviewEnabled && draftCode ? (
+                {/* Live Preview */}
+                <div className="p-6 min-h-[400px]">
+                  {livePreviewEnabled && selectedComponent.code ? (
                     <LiveProvider
-                      code={transformCodeForPreview(draftCode)}
+                      code={transformCodeForPreview(selectedComponent.code)}
                       noInline={false}
                     >
-                      <div className="w-full flex items-center justify-center">
-                        <LiveError className="text-red-400 text-sm bg-red-500/10 p-4 rounded-lg" />
-                        <LivePreview className="w-full flex items-center justify-center" />
+                      <div className="transform-gpu">
+                        <LivePreview />
                       </div>
+                      <LiveError className="text-red-600 text-xs bg-red-50 p-3 rounded-lg border border-red-100" />
                     </LiveProvider>
-                  ) : selectedComponent.component ? (
-                    // Fallback to static component
-                    <div className="w-full flex items-center justify-center">
-                      <selectedComponent.component />
-                    </div>
                   ) : (
-                    <div className="text-white/30 text-center">
-                      <p>No preview available</p>
-                      <p className="text-xs mt-1">This is a backend/prompt component</p>
+                    <div className="flex items-center justify-center h-full text-slate-400">
+                      <div className="text-center">
+                        <AlertCircle className="w-12 h-12 mx-auto mb-3 opacity-40" />
+                        <p className="text-slate-600 font-medium text-sm">Live Preview Disabled</p>
+                        <p className="text-slate-400 text-xs mt-1">Enable in Code Terminal</p>
+                      </div>
                     </div>
                   )}
                 </div>
-              ) : (
-                <pre className="bg-black/50 rounded-xl border border-white/10 p-4 overflow-x-auto max-h-[500px]">
-                  <code className="text-sm text-green-400/90 font-mono whitespace-pre">
-                    {draftCode || selectedComponent.code}
-                  </code>
-                </pre>
-              )}
-            </motion.div>
+              </div>
+            </div>
           ) : (
-            <div className="text-center text-white/30">
-              <LayoutTemplate className="w-12 h-12 mx-auto mb-3 opacity-50" />
-              <p className="text-sm">Select a component to preview</p>
-              <p className="text-xs mt-1">Edit in Code Terminal for live changes</p>
+            /* Code View */
+            <div className="max-w-4xl mx-auto">
+              <div className="bg-slate-900 rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+                <div className="px-4 py-3 border-b border-slate-700 bg-slate-800/50 flex items-center justify-between">
+                  <span className="text-slate-300 text-xs font-mono">{selectedComponent.name}.tsx</span>
+                  <span className="text-slate-400 text-xs">TypeScript React</span>
+                </div>
+                <pre className="p-4 overflow-auto text-sm font-mono text-slate-300">
+                  <code>{selectedComponent.code}</code>
+                </pre>
+              </div>
             </div>
           )}
         </div>
-
-        {/* Info Bar */}
-        {selectedComponent && (
-          <div className="px-4 py-2 border-t border-white/10 bg-black/30 flex items-center justify-between">
-            <span className="text-white/40 text-xs">
-              {selectedComponent.name} • {selectedComponent.id}
-            </span>
-            <span className="text-white/40 text-xs">
-              {viewMode === 'preview' && selectedComponent.component ? deviceSize : 'code'} view
-            </span>
-          </div>
-        )}
       </div>
     </div>
   );
