@@ -37,3 +37,8 @@ next-env.d.ts
 # Playwright
 /playwright-report
 /test-results
+
+# backend
+/2-backend-vault/__pycache__
+/2-backend-vault/*.pyc
+/2-backend-vault/.env
