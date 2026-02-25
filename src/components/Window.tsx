@@ -21,6 +21,13 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
     title,
   } = windowState;
 
+  // Art Brut: Unique rough border radius for each window (hand-drawn effect)
+  const roughBorderRadius = id === 'spio-explorer' 
+    ? '255px 15px 225px 15px / 15px 225px 15px 255px'
+    : id === 'code-terminal'
+    ? '15px 225px 15px 255px / 255px 15px 225px 15px'
+    : '225px 15px 255px 15px / 15px 255px 15px 225px';
+
   const {
     closeWindow,
     minimizeWindow,
@@ -86,13 +93,14 @@ const Window: React.FC<WindowProps> = memo(({ windowState, children }) => {
 
   return (
     <motion.div
-      className="absolute overflow-hidden bg-white/50 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-3xl z-50"
+      className="absolute overflow-hidden bg-white/50 backdrop-blur-[40px] saturate-[1.2] border border-white/80 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] z-50"
       style={{
         width: isMaximized ? '100%' : size.width,
         height: isMaximized ? 'calc(100% - 80px)' : size.height,
         left: isMaximized ? 0 : position.x,
         top: isMaximized ? 0 : position.y,
         zIndex: zIndex + 50, // Ensure windows are above background blobs
+        borderRadius: roughBorderRadius, // Art Brut hand-drawn effect
       }}
       initial={{ opacity: 0, scale: 0.97, y: 12 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}

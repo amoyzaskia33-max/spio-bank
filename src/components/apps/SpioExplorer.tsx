@@ -104,7 +104,7 @@ const SpioExplorer: React.FC = memo(() => {
   }, []);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full" style={{ borderRadius: '255px 15px 225px 15px / 15px 225px 15px 255px' }}>
       {/* Sidebar - Enhanced Visibility */}
       <div className="w-64 border-r border-white/60 bg-white/60 backdrop-blur-3xl saturate-[1.2] overflow-y-auto relative z-20">
         <div className="p-6 border-b border-white/60">

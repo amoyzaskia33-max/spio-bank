@@ -247,7 +247,7 @@ const CodeTerminal: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full font-inter antialiased">
+    <div className="flex h-full font-inter antialiased" style={{ borderRadius: '15px 225px 15px 255px / 255px 15px 225px 15px' }}>
       {/* Sidebar - Enhanced Visibility */}
       <div className={`border-r border-white/60 bg-white/70 backdrop-blur-3xl saturate-[1.2] flex flex-col transition-all duration-300 relative z-20 ${
         isInteractiveMode ? 'w-48' : 'w-64'

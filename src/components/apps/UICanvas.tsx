@@ -133,7 +133,7 @@ const UICanvas: React.FC = () => {
   };
 
   return (
-    <div className="flex h-full font-inter antialiased">
+    <div className="flex h-full font-inter antialiased" style={{ borderRadius: '225px 15px 255px 15px / 15px 255px 15px 225px' }}>
       {/* Components Sidebar - Enhanced Visibility */}
       <div className="w-64 border-r border-white/60 bg-white/70 backdrop-blur-3xl saturate-[1.2] flex flex-col relative z-20">
         <div className="p-4 border-b border-white/60">
