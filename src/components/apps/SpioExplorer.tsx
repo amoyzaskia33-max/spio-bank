@@ -37,10 +37,8 @@ const SpioExplorer: React.FC = () => {
   };
 
   const handleComponentSelect = (component: SpioComponent) => {
-    // Set active component in store
     setActiveComponent(component.id);
 
-    // Open both Code Terminal and UI Canvas windows
     const terminalAppDef = getAppDefinition(APP_IDS.CODE_TERMINAL);
     const canvasAppDef = getAppDefinition(APP_IDS.UI_CANVAS);
 
@@ -56,23 +54,23 @@ const SpioExplorer: React.FC = () => {
   const getFileIcon = (category: string) => {
     switch (category) {
       case 'Frontend':
-        return <FileCode className="w-4 h-4 text-blue-400" />;
+        return <FileCode className="w-4 h-4 text-spio-blue" />;
       case 'Backend':
-        return <FileJson className="w-4 h-4 text-yellow-400" />;
+        return <FileJson className="w-4 h-4 text-spio-yellow" />;
       case 'Prompt':
-        return <FileType className="w-4 h-4 text-purple-400" />;
+        return <FileType className="w-4 h-4 text-spio-purple" />;
       default:
-        return <FileCode className="w-4 h-4 text-white/60" />;
+        return <FileCode className="w-4 h-4 text-spio-text-subtle" />;
     }
   };
 
   return (
     <div className="flex h-full">
       {/* Sidebar */}
-      <div className="w-64 border-r border-white/10 bg-black/30 overflow-y-auto">
-        <div className="p-3 border-b border-white/10">
-          <h2 className="text-white/90 font-semibold text-sm flex items-center gap-2">
-            <Folder className="w-4 h-4 text-green-400" />
+      <div className="w-64 border-r border-white/5 bg-spio-base/50 backdrop-blur-glass overflow-y-auto">
+        <div className="p-4 border-b border-white/5">
+          <h2 className="text-spio-text font-semibold text-sm flex items-center gap-2">
+            <Folder className="w-4 h-4 text-spio-accent" strokeWidth={1.5} />
             SPIO Explorer
           </h2>
         </div>
@@ -81,18 +79,18 @@ const SpioExplorer: React.FC = () => {
           {categories.map((category) => (
             <div key={category.name}>
               <motion.div
-                className="flex items-center gap-2 px-2 py-1.5 cursor-pointer rounded-md hover:bg-white/5 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 cursor-pointer rounded-xl hover:bg-white/5 transition-colors"
                 onClick={() => toggleCategory(category.name)}
                 whileHover={{ x: 2 }}
               >
                 {expandedCategories[category.name] ? (
-                  <ChevronDown className="w-4 h-4 text-white/40" />
+                  <ChevronDown className="w-4 h-4 text-spio-text-subtle" />
                 ) : (
-                  <ChevronRight className="w-4 h-4 text-white/40" />
+                  <ChevronRight className="w-4 h-4 text-spio-text-subtle" />
                 )}
-                <FolderOpen className="w-4 h-4 text-yellow-400" />
-                <span className="text-white/80 text-sm">{category.name}</span>
-                <span className="ml-auto text-white/40 text-xs">{category.components.length}</span>
+                <FolderOpen className="w-4 h-4 text-spio-mint" />
+                <span className="text-spio-text text-sm">{category.name}</span>
+                <span className="ml-auto text-spio-text-subtle text-xs">{category.components.length}</span>
               </motion.div>
 
               {expandedCategories[category.name] && (
@@ -105,12 +103,12 @@ const SpioExplorer: React.FC = () => {
                   {category.components.map((component) => (
                     <motion.div
                       key={component.id}
-                      className="flex items-center gap-2 px-2 py-1.5 ml-4 cursor-pointer rounded-md hover:bg-white/5 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 ml-4 cursor-pointer rounded-xl hover:bg-white/5 transition-colors"
                       onClick={() => handleComponentSelect(component)}
                       whileHover={{ x: 2, backgroundColor: 'rgba(255,255,255,0.08)' }}
                     >
                       {getFileIcon(category.name)}
-                      <span className="text-white/80 text-sm truncate">{component.title}</span>
+                      <span className="text-spio-text text-sm truncate">{component.title}</span>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -120,14 +118,13 @@ const SpioExplorer: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content - Preview Panel */}
-      <div className="flex-1 bg-black/20 p-6 overflow-y-auto">
-        <div className="max-w-2xl mx-auto">
-          <div className="mb-6">
-            <h1 className="text-2xl font-bold text-white mb-2">SPIO OS Boilerplate Vault</h1>
-            <p className="text-white/60">
-              Select a component from the sidebar to preview and copy its code.
-              Double-click to open in Code Terminal and UI Canvas.
+      {/* Main Content */}
+      <div className="flex-1 bg-spio-base/30 p-6 overflow-y-auto">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-spio-text mb-3">SPIO OS Boilerplate Vault</h1>
+            <p className="text-spio-text-subtle">
+              Select a component to preview and edit. Changes sync live to UI Canvas.
             </p>
           </div>
 
@@ -136,47 +133,47 @@ const SpioExplorer: React.FC = () => {
             {categories.map((category) => (
               <div
                 key={category.name}
-                className="bg-black/50 backdrop-blur-xl border border-white/10 rounded-xl p-4"
+                className="glass rounded-2xl p-5 border border-white/5"
               >
                 <div className="flex items-center gap-2 mb-2">
                   {getFileIcon(category.name)}
-                  <span className="text-white/60 text-sm">{category.name}</span>
+                  <span className="text-spio-text-subtle text-sm">{category.name}</span>
                 </div>
-                <p className="text-2xl font-bold text-white">{category.components.length}</p>
-                <p className="text-white/40 text-xs">components</p>
+                <p className="text-3xl font-bold text-spio-text">{category.components.length}</p>
+                <p className="text-spio-text-subtle text-xs mt-1">components</p>
               </div>
             ))}
           </div>
 
           {/* All Components Grid */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {categories.map((category) => (
               <div key={category.name}>
-                <h3 className="text-white/80 font-semibold mb-3 flex items-center gap-2">
+                <h3 className="text-spio-text font-semibold mb-4 flex items-center gap-2">
                   {getFileIcon(category.name)}
                   {category.name}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {category.components.map((component) => (
                     <motion.div
                       key={component.id}
-                      className="bg-black/50 backdrop-blur-xl border border-white/10 rounded-xl p-4 cursor-pointer hover:border-green-500/30 transition-colors"
+                      className="glass rounded-2xl p-5 cursor-pointer hover:border-spio-accent/50 transition-colors border border-white/5"
                       onClick={() => handleComponentSelect(component)}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="text-white font-medium">{component.title}</h4>
+                      <div className="flex items-start justify-between mb-3">
+                        <h4 className="text-spio-text font-medium">{component.title}</h4>
                         {component.componentType && (
-                          <span className="px-2 py-0.5 bg-green-500/20 text-green-400 text-xs rounded">
+                          <span className="px-2 py-1 bg-spio-mint/20 text-spio-mint text-xs rounded-lg">
                             Live
                           </span>
                         )}
                       </div>
                       {component.description && (
-                        <p className="text-white/60 text-sm mb-3">{component.description}</p>
+                        <p className="text-spio-text-subtle text-sm mb-3">{component.description}</p>
                       )}
-                      <p className="text-white/40 text-xs">
+                      <p className="text-spio-text-subtle text-xs">
                         Click to open in Code Terminal & UI Canvas
                       </p>
                     </motion.div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useOSStore, { APP_IDS, getAppDefinition } from '@/store/useOSStore';
 import Window from './Window';
@@ -36,24 +36,25 @@ const Desktop: React.FC = () => {
       case APP_IDS.UI_CANVAS:
         return <UICanvas />;
       default:
-        return <div className="p-4 text-white/60">Unknown App</div>;
+        return <div className="p-4 text-spio-text-subtle">Unknown App</div>;
     }
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-nexus-black">
-      {/* Background Grid Pattern */}
-      <div 
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage: 'radial-gradient(circle at center, rgba(0, 255, 136, 0.05) 0%, transparent 70%)',
-        }}
-      />
+    <div className="relative w-screen h-screen overflow-hidden bg-spio-base">
+      {/* macOS-style Dark Pastel Background */}
       <div 
         className="absolute inset-0"
         style={{
-          backgroundImage: 'linear-gradient(to right, rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.02) 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
+          background: 'linear-gradient(135deg, #1e1e2e 0%, #24283b 50%, #1a1a28 100%)',
+        }}
+      />
+      
+      {/* Subtle gradient overlay */}
+      <div 
+        className="absolute inset-0 opacity-30"
+        style={{
+          background: 'radial-gradient(circle at 30% 50%, rgba(129, 140, 248, 0.15) 0%, transparent 50%)',
         }}
       />
 

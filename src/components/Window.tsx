@@ -2,7 +2,7 @@
 
 import React, { useCallback } from 'react';
 import { motion, PanInfo } from 'framer-motion';
-import { X, Minus, Square, Copy } from 'lucide-react';
+import { X, Minus, Square } from 'lucide-react';
 import useOSStore, { WindowState } from '@/store/useOSStore';
 
 interface WindowProps {
@@ -19,7 +19,6 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
     isMinimized,
     zIndex,
     title,
-    icon: IconName,
   } = windowState;
 
   const {
@@ -38,9 +37,8 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
       const newX = Math.max(0, position.x + info.delta.x);
       const newY = Math.max(0, position.y + info.delta.y);
 
-      // Constrain to viewport
       const maxX = typeof window !== 'undefined' ? window.innerWidth - size.width : 0;
-      const maxY = typeof window !== 'undefined' ? window.innerHeight - size.height - 60 : 0; // 60px for taskbar
+      const maxY = typeof window !== 'undefined' ? window.innerHeight - size.height - 80 : 0;
 
       updateWindowPosition(id, {
         x: Math.min(Math.max(0, newX), maxX),
@@ -88,10 +86,10 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
 
   return (
     <motion.div
-      className="fixed rounded-lg overflow-hidden shadow-2xl border border-white/10 bg-black/90 backdrop-blur-xl"
+      className="fixed rounded-3xl overflow-hidden shadow-window border border-white/10 bg-spio-surface/95 backdrop-blur-glass-heavy"
       style={{
         width: isMaximized ? '100%' : size.width,
-        height: isMaximized ? 'calc(100% - 60px)' : size.height,
+        height: isMaximized ? 'calc(100% - 80px)' : size.height,
         left: isMaximized ? 0 : position.x,
         top: isMaximized ? 0 : position.y,
         zIndex,
@@ -99,57 +97,57 @@ const Window: React.FC<WindowProps> = ({ windowState, children }) => {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.15, ease: 'easeOut' }}
+      transition={{ duration: 0.2, ease: 'easeOut' }}
       drag={!isMaximized}
       dragMomentum={false}
       dragElastic={0}
       onDragEnd={handleDragEnd}
       onMouseDown={() => focusWindow(id)}
     >
-      {/* Title Bar */}
+      {/* Title Bar - macOS Style (controls on LEFT) */}
       <div
-        className="flex items-center justify-between h-10 px-3 bg-gradient-to-r from-white/5 to-transparent cursor-move select-none border-b border-white/10"
+        className="flex items-center justify-between h-12 px-4 bg-gradient-to-b from-white/5 to-transparent cursor-move select-none border-b border-white/5"
         onClick={handleTitleBarClick}
         onDoubleClick={handleMaximizeToggle}
       >
+        {/* macOS Window Controls (LEFT side) */}
         <div className="flex items-center gap-2">
-          <span className="text-white/70 text-xs uppercase tracking-wider">{title}</span>
-        </div>
-
-        {/* Window Controls */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={handleMinimize}
-            className="p-1.5 rounded-md hover:bg-white/10 transition-colors group"
-            title="Minimize"
-          >
-            <Minus className="w-3.5 h-3.5 text-white/60 group-hover:text-white" />
-          </button>
-
-          <button
-            onClick={handleMaximizeToggle}
-            className="p-1.5 rounded-md hover:bg-white/10 transition-colors group"
-            title={isMaximized ? 'Restore' : 'Maximize'}
-          >
-            {isMaximized ? (
-              <Copy className="w-3.5 h-3.5 text-white/60 group-hover:text-white" />
-            ) : (
-              <Square className="w-3.5 h-3.5 text-white/60 group-hover:text-white" />
-            )}
-          </button>
-
           <button
             onClick={handleClose}
-            className="p-1.5 rounded-md hover:bg-red-500/80 transition-colors group"
+            className="group w-3 h-3 rounded-full bg-spio-red flex items-center justify-center transition-all hover:bg-spio-red/80"
             title="Close"
           >
-            <X className="w-3.5 h-3.5 text-white/60 group-hover:text-white" />
+            <X className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
+          </button>
+          
+          <button
+            onClick={handleMinimize}
+            className="group w-3 h-3 rounded-full bg-spio-yellow flex items-center justify-center transition-all hover:bg-spio-yellow/80"
+            title="Minimize"
+          >
+            <Minus className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
+          </button>
+          
+          <button
+            onClick={handleMaximizeToggle}
+            className="group w-3 h-3 rounded-full bg-spio-green flex items-center justify-center transition-all hover:bg-spio-green/80"
+            title={isMaximized ? 'Restore' : 'Maximize'}
+          >
+            <Square className="w-2 h-2 text-black/60 opacity-0 group-hover:opacity-100" />
           </button>
         </div>
+
+        {/* Window Title (CENTER) */}
+        <div className="flex-1 text-center">
+          <span className="text-spio-text/70 text-xs font-medium tracking-wide uppercase">{title}</span>
+        </div>
+
+        {/* Empty space on RIGHT for balance */}
+        <div className="w-16" />
       </div>
 
       {/* Window Content */}
-      <div className="h-[calc(100%-40px)] overflow-auto bg-black/50">{children}</div>
+      <div className="h-[calc(100%-48px)] overflow-auto bg-spio-base/30">{children}</div>
     </motion.div>
   );
 };

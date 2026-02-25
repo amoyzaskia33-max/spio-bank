@@ -41,46 +41,50 @@ const Taskbar: React.FC = () => {
 
   return (
     <motion.div
-      className="absolute bottom-0 left-0 right-0 h-[60px] bg-black/80 backdrop-blur-xl border-t border-white/10 flex items-center justify-center px-4"
-      initial={{ y: 100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
+      className="absolute bottom-4 left-0 right-0 flex items-center justify-center px-4"
+      initial={{ y: 100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
     >
-      <div className="flex items-center gap-2">
-        {apps.map((app) => {
-          const isOpen = windows[app.id]?.isOpen;
-          const isActive = windows[app.id] && !windows[app.id].isMinimized;
+      {/* macOS-style Floating Dock */}
+      <div className="glass-heavy rounded-dock px-3 py-2 shadow-dock">
+        <div className="flex items-center gap-2">
+          {apps.map((app) => {
+            const isOpen = windows[app.id]?.isOpen;
+            const isActive = windows[app.id] && !windows[app.id].isMinimized;
 
-          return (
-            <motion.button
-              key={app.id}
-              onClick={() => handleAppClick(app.id, app.component)}
-              className={`relative flex flex-col items-center justify-center w-14 h-14 rounded-xl transition-all duration-200 ${
-                isActive
-                  ? 'bg-white/10'
-                  : 'hover:bg-white/5'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              title={app.label}
-            >
-              <app.icon
-                className={`w-6 h-6 ${
-                  isActive ? 'text-white' : 'text-white/60'
+            return (
+              <motion.button
+                key={app.id}
+                onClick={() => handleAppClick(app.id, app.component)}
+                className={`relative flex flex-col items-center justify-center w-14 h-14 rounded-2xl transition-all duration-200 ${
+                  isActive
+                    ? 'bg-white/10 shadow-lg'
+                    : 'hover:bg-white/5'
                 }`}
-              />
-              
-              {/* Indicator dot for open apps */}
-              {isOpen && (
-                <motion.div
-                  className="absolute bottom-1 w-1 h-1 rounded-full bg-white/60"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
+                whileHover={{ scale: 1.1, y: -4 }}
+                whileTap={{ scale: 0.95 }}
+                title={app.label}
+              >
+                <app.icon
+                  className={`w-7 h-7 ${
+                    isActive ? 'text-spio-accent' : 'text-spio-text-subtle'
+                  }`}
+                  strokeWidth={1.5}
                 />
-              )}
-            </motion.button>
-          );
-        })}
+                
+                {/* Active indicator dot */}
+                {isOpen && (
+                  <motion.div
+                    className="absolute -bottom-1 w-1 h-1 rounded-full bg-spio-accent"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                  />
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
       </div>
     </motion.div>
   );

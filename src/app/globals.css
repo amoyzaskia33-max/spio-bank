@@ -3,9 +3,17 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  /* macOS Dark Pastel Theme */
+  --foreground-rgb: 205, 214, 244;
+  --background-start-rgb: 30, 30, 46;
+  --background-end-rgb: 36, 40, 59;
+  
+  /* Accent Colors */
+  --accent-primary: 129, 140, 248;   /* Soft Indigo */
+  --accent-mint: 52, 211, 153;        /* Muted Mint */
+  --accent-red: 243, 139, 168;        /* Close */
+  --accent-yellow: 249, 226, 175;     /* Minimize */
+  --accent-green: 166, 227, 161;      /* Maximize */
 }
 
 * {
@@ -19,28 +27,28 @@ body {
   max-width: 100vw;
   max-height: 100vh;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #1e1e2e 0%, #24283b 50%, #1a1a28 100%);
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - macOS Style */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -49,6 +57,28 @@ body {
 
 /* Selection */
 ::selection {
-  background: rgba(0, 255, 136, 0.3);
-  color: #ffffff;
+  background: rgba(129, 140, 248, 0.4);
+  color: #cdd6f4;
+}
+
+/* Smooth Animations */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Glass Effect Utility */
+.glass {
+  background: rgba(48, 48, 68, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-heavy {
+  background: rgba(48, 48, 68, 0.8);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
