@@ -1,0 +1,53 @@
+# PRODUCT REQUIREMENTS DOCUMENT (PRD) & AGENT INSTRUCTIONS
+# Project: NEXUS OS Auto-Vault (Web OS Interface)
+
+## 1. PROJECT OVERVIEW
+NEXUS OS Auto-Vault is a Web-Based Operating System interface. It serves as a highly premium, private boilerplate bank (UI components, backend logic, AI prompts). 
+The interface must simulate a high-tech desktop/terminal environment (Kasta OS). It will be deployed via Dokploy (acting as a private Vercel).
+
+## 2. TECH STACK (STRICT)
+- Framework: Next.js (App Router)
+- Styling: Tailwind CSS
+- Animations & Physics: Framer Motion (Crucial for dragging & window physics)
+- State Management: Zustand (For handling window coordinates, z-index, and active apps)
+- Icons: Lucide React
+- Code Highlighting: PrismJS or standard syntax highlighter for the "Copy Code" feature.
+
+## 3. CORE FEATURES & ARCHITECTURE (PHASE 1 - FRONTEND ONLY)
+
+### A. The Boot Sequence
+- A fake terminal loading screen lasting 1.5 seconds on initial load.
+- Output: `[OK] Booting NEXUS Core...`, `[OK] Loading Boilerplate Vault...` before transitioning to the Desktop.
+
+### B. The Desktop Environment (`Desktop.tsx`)
+- A full-screen canvas (100vh, 100vw) with a dark, high-tech aesthetic (e.g., deep black with a subtle glowing grid or liquid metal vibe).
+- A Taskbar/Dock at the bottom containing icons for built-in apps.
+
+### C. The Window Manager (`Window.tsx` & Zustand Store)
+- ALL applications open inside a floating "Window" component.
+- Window Capabilities:
+  - Draggable (using Framer Motion `drag`).
+  - Constrained to the screen bounds.
+  - Controls: Close (X), Maximize (+), Minimize (-).
+  - Z-index sorting (clicking a window brings it to the front).
+
+### D. The Core OS Applications
+1. **Nexus Explorer:** A File Manager UI. Left sidebar for categories (Frontend, Backend, Prompts). Main area displays files/components as icons or lists.
+2. **Code Terminal:** A window dedicated to displaying raw code snippets with a highly visible "Copy to Clipboard" button.
+3. **UI Canvas:** A window that renders the actual React/Tailwind component (e.g., a Shadcn button or Magic UI card) so the user can see the live preview.
+
+## 4. STRICT RULES FOR AI CLI AGENT (SYSTEM DIRECTIVES)
+
+As the Senior Frontend OS Architect, you MUST obey the following rules. Failure to comply violates the core system directives:
+
+1. **STAY IN CONTEXT:** We are currently ONLY building the Frontend Web OS UI. DO NOT generate backend Python scripts, AI maintenance scripts, or database connectors yet. Focus 100% on the Next.js UI.
+2. **NO EXTERNAL DEPENDENCIES WITHOUT PERMISSION:** Stick strictly to the Tech Stack above. Do not install heavy external libraries. Use Tailwind for styling.
+3. **MODULAR DEVELOPMENT:** Do not write one massive file. Build modular components.
+   - Start with the Zustand store (`useOSStore.ts`).
+   - Then build the `Window.tsx` wrapper.
+   - Then build the `Desktop.tsx` and `Taskbar.tsx`.
+4. **PRODUCTION READY:** No placeholder comments like `// add logic here`. Write the complete, working logic for the drag-and-drop window manager.
+5. **DOKPLOY COMPATIBILITY:** Ensure the `package.json` uses standard Next.js build scripts (`npm run build`) so Dokploy can automatically deploy it without custom configurations.
+
+## 5. FIRST TASK
+Acknowledge this PRD. Your first output must ONLY be the code for the Zustand state manager (`useOSStore.ts`) and the `Window.tsx` component using Framer Motion. Do not proceed to other components until these two are approved.
